@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Cart System</title>
+    <style>
+        /* Page Background */
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #2a4f5e;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Glassmorphism Registration Box */
+        .register-box {
+            width: 380px;
+            padding: 25px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+
+        /* Title */
+        .register-box h2 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        /* Input Fields */
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.6);
+            font-size: 16px;
+        }
+
+        /* Register Button */
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background: #ff3b60;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #ff1744;
+        }
+
+        /* Link to Login */
+        .login-link {
+            color: white;
+            display: block;
+            margin-top: 15px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="register-box">
+    <h2>Register</h2>
+    <form th:action="@{/register}" method="post">
+        <input type="text" class="input-field" name="username" placeholder="Username" required>
+        <input type="email" class="input-field" name="email" placeholder="Email" required>
+        <input type="password" class="input-field" name="password" placeholder="Password" required>
+        <input type="password" class="input-field" name="confirmPassword" placeholder="Confirm Password" required>
+        <button type="submit" class="btn">Register</button>
+    </form>
+    <a href="/login" class="login-link">Already have an account? Login</a>
+</div>
+
+</body>
+</html>

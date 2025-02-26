@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {margin: 0; font-family: Arial, sans-serif; background-color: #f9f9f9;}
+
+        ul.sidenav {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          width: 25%;
+          background-color: #333;
+          position: fixed;
+          height: 100%;
+          overflow: auto;
+        }
+
+        ul.sidenav li a {
+          display: block;
+          color: white;
+          padding: 10px 16px;
+          text-decoration: none;
+        }
+
+        ul.sidenav li a.active {
+          background-color: #4CAF50;
+          color: white;
+        }
+
+        ul.sidenav li a:hover:not(.active) {
+          background-color: #555;
+        }
+
+        div.content {
+          margin-left: 25%;
+          padding: 20px;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;
+          justify-content: center;
+        }
+
+        .cart {
+          margin-left: 25%;
+          padding: 20px;
+          background-color: #fff;
+          border-top: 2px solid #000;
+        }
+
+        .product {
+          width: 30%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          background: white;
+          padding: 15px;
+          border-radius: 10px;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+          transition: transform 0.3s;
+        }
+
+        .product:hover {
+          transform: scale(1.05);
+        }
+
+        .product img {
+          width: 100%;
+          max-width: 250px;
+          height: auto;
+          border-radius: 10px;
+        }
+
+        button {
+          background-color: #4CAF50;
+          color: white;
+          border: none;
+          padding: 10px 15px;
+          cursor: pointer;
+          font-size: 16px;
+          border-radius: 5px;
+          transition: background 0.3s;
+        }
+
+        button:hover {
+          background-color: #45a049;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 15px;
+          border-radius: 4px;
+        }
+
+        table, th, td {
+          border: 1px solid #ccc;
+        }
+
+        th, td {
+          padding: 10px;
+          text-align: left;
+        }
+
+        th {
+          background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+
+<ul class="sidenav">
+    <li><a class="active" th:href="@{/home}">Home</a></li>
+    <li><a th:href="@{/register}">Register</a></li>
+    <li><a th:href="@{/login}">Login</a></li>
+    <li><a th:href="@{/about}">About</a></li>
+</ul>
+
+<div class="content">
+    <h2>Shop</h2>
+
+    <div class="product">
+        <img th:src="@{C:\Frontend Learning\TV.png}" alt="Smart TV">
+        <h3>Smart TV</h3>
+        <p>50-inch 4K Ultra HD Smart TV</p>
+        <p><strong>$500</strong></p>
+        <form th:action="@{/cart}" method="post">
+            <input type="hidden" name="Product_name" th:value="TV">
+            <input type="hidden" name="price" th:value="500">
+            <button type="submit">Add to Cart</button>
+        </form>
+    </div>
+
+    <div class="product">
+        <img th:src="@{/images/laptop.png}" alt="Laptop">
+        <h3>Laptop</h3>
+        <p>High-performance laptop with SSD</p>
+        <p><strong>$1000</strong></p>
+        <form th:action="@{/cart}" method="post">
+            <input type="hidden" name="Product_name" th:value="Laptop">
+            <input type="hidden" name="price" th:value="1000">
+            <button type="submit">Add to Cart</button>
+        </form>
+    </div>
+
+    <div class="product">
+        <img th:src="@{/images/phone.png}" alt="Smartphone">
+        <h3>Smartphone</h3>
+        <p>Latest model with AMOLED display</p>
+        <p><strong>$700</strong></p>
+        <form th:action="@{/cart}" method="post">
+            <input type="hidden" name="Product_name" th:value="Phone">
+            <input type="hidden" name="price" th:value="700">
+            <button type="submit">Add to Cart</button>
+        </form>
+    </div>
+</div>
+
+<div class="cart">
+    <h2>Shopping Cart ${item.id}</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Item-ID</th>
+            <th>Item-Name</th>
+            <th>Item-Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item :${items}">
+            <td th:text="${item.id}"></td>
+            <td th:text="${item.Product_name}"></td>
+            <td th:text="${item.price}"></td>
+        </tr>
+        </tbody>
+
+    </table>
+    <form th:action="@{/checkout}" method="post">
+        <button type="submit">Checkout</button>
+    </form>
+</div>
+
+</body>
+</html>

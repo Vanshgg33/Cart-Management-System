@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {margin: 0; font-family: Arial, sans-serif; background-color: #f9f9f9;}
+
+        ul.sidenav {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          width: 25%;
+          background-color: #333;
+          position: fixed;
+          height: 100%;
+          overflow: auto;
+        }
+
+        ul.sidenav li a {
+          display: block;
+          color: white;
+          padding: 10px 16px;
+          text-decoration: none;
+        }
+
+        ul.sidenav li a.active {
+          background-color: #4CAF50;
+          color: white;
+        }
+
+        ul.sidenav li a:hover:not(.active) {
+          background-color: #555;
+        }
+
+        div.content {
+          margin-left: 25%;
+          padding: 20px;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;
+          justify-content: center;
+        }
+
+        @media screen and (max-width: 900px) {
+          ul.sidenav {
+            width: 100%;
+            height: auto;
+            position: relative;
+          }
+
+          ul.sidenav li a {
+            float: left;
+            padding: 15px;
+          }
+
+          div.content {margin-left: 0;}
+        }
+
+        @media screen and (max-width: 600px) {
+          ul.sidenav li a {
+            text-align: center;
+            float: none;
+          }
+        }
+
+        .product {
+          width: 30%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          background: white;
+          padding: 15px;
+          border-radius: 10px;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+          transition: transform 0.3s;
+        }
+
+        .product:hover {
+          transform: scale(1.05);
+        }
+
+        .product img {
+          width: 100%;
+          max-width: 250px;
+          height: auto;
+          border-radius: 10px;
+        }
+
+        button {
+          background-color: #4CAF50;
+          color: white;
+          border: none;
+          padding: 10px 15px;
+          cursor: pointer;
+          font-size: 16px;
+          border-radius: 5px;
+
+        }
+        .sidenav-content {
+          display: none;
+          position: absolute;
+          background-color: #f9f9f9;
+          min-width: 160px;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 1;
+        }
+        .sidenav-content a {
+          color: black;
+          padding: 12px 16px;
+          text-decoration: none;
+          display: block;
+        }
+        .sidenav-content a:hover {background-color: #f1f1f1}
+
+        .sidenav-content:hover .dropdown-content {
+          display: block;
+        }
+
+        button:hover {
+          background-color: #45a049;
+        }
+
+    </style>
+</head>
+<body>
+
+<ul class="sidenav">
+    <li><a class="active" th:href="@{/home}">Home</a></li>
+    <li><a th:href="@{/register}">Register</a></li>
+    <li><a th:href="@{/login}">Login</a></li>
+    <li><a th:href="@{/about}">About</a></li>
+</ul>
+
+<div class="content">
+    <h2>Shop</h2>
+
+    <div class="product">
+        <img src="C:\Frontend Learning\TV.png" alt="TV">
+        <h3>Smart TV</h3>
+        <p>50-inch 4K Ultra HD Smart TV</p>
+        <p><strong>$500</strong></p>
+        <form action="cart" method="post">
+
+            <input type="hidden" name="Product_name" value="TV">
+            <input type="hidden" name="price" value="500">
+            <button type="submit">Add to Cart</button>
+        </form>
+    </div>
+
+    <div class="product">
+        <img src="C:\Frontend Learning\laptop.png" alt="Laptop">
+        <h3>Laptop</h3>
+        <p>High-performance laptop with SSD</p>
+        <p><strong>$1000</strong></p>
+        <form action="cart" method="post">
+
+            <input type="hidden" name="Product_name" value="Laptop">
+            <input type="hidden" name="price" value="1000">
+            <button type="submit">Add to Cart</button>
+        </form>
+    </div>
+
+    <div class="product">
+        <img src="C:\Frontend Learning\Phone.png" alt="Phone">
+        <h3>Smartphone</h3>
+        <p>Latest model with AMOLED display</p>
+        <p><strong>$700</strong></p>
+        <form action="cart" method="post">
+
+            <input type="hidden" name="Product_name" value="Phone">
+            <input type="hidden" name="price" value="700">
+            <button type="submit">Add to Cart</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

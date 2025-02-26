@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Checkout</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f8f8f8;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #fff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        .qr-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        img {
+            width: 200px;
+            height: 200px;
+            margin-top: 10px;
+        }
+        .checkout-btn {
+            display: block;
+            width: 200px;
+            padding: 10px;
+            margin: 20px auto;
+            text-align: center;
+            background-color: #28a745;
+            color: white;
+            font-size: 18px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .checkout-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Checkout Page</h2>
+
+<!-- Display Cart Items -->
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Product Name</th>
+        <th>Price (₹)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${cartlist}">
+        <td th:text="${item.id}"></td>
+        <td th:text="${item.Product_name}"></td>
+        <td th:text="${item.price}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Display QR Code -->
+<div class="qr-container">
+    <h3>Scan QR Code for Checkout</h3>
+    <img th:src="'data:image/png;base64,' + ${qrCode}" alt="QR Code" />
+</div>
+
+<!-- Checkout Button (Optional) -->
+<a href="/payment" class="checkout-btn">Proceed to Payment</a>
+
+</body>
+</html>

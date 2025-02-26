@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            background-color: rgb(83, 226, 233);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            position: relative;
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+        .container {
+            position: relative;
+            background: linear-gradient(135deg,#53c8ee,#0077d8);
+            width: 400px;
+            padding: 2em;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            z-index: 2;
+            color: aliceblue;
+        }
+        .auth-box h2 {
+            color: #fff;
+            margin-bottom: 1em;
+            font-weight: 700;
+            font-size: 1.8em;
+        }
+        .auth-box label {
+            font-size: 1em;
+            color: #fff;
+            display: block;
+            text-align: left;
+            margin: 0.5em 0 0.4em;
+        }
+        .auth-box input[type="text"],
+        .auth-box input[type="password"] {
+            width: 100%;
+            padding: 0.8em;
+            margin-bottom: 1.2em;
+            border: 1px solid #e2b2b2;
+            border-radius: 5px;
+            font-size: 1em;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .auth-box button {
+            width: 100%;
+            padding: 0.8em;
+            background: #0077d8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .auth-box button:hover {
+            background: #005bb5;
+        }
+        .register-link {
+            margin-top: 1em;
+            color: #fff;
+        }
+        .register-link a {
+            color: #ffea00;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="auth-box">
+        <h2>Login User</h2>
+        <form th:action="@{/login}" method="POST">
+            <label>Username:</label>
+            <input type="text" name="username" placeholder="Username" required>
+            <label>Password:</label>
+            <input type="password" name="password" placeholder="Enter Your Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p class="register-link">
+            New here? <a th:href="@{/Register}">Create an account</a>.
+        </p>
+    </div>
+</div>
+</body>
+</html>
