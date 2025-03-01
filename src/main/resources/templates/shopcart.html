@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
         body {margin: 0; font-family: Arial, sans-serif; background-color: #f9f9f9;}
 
@@ -159,12 +160,13 @@
 
 <div class="cart">
     <h2>Shopping Cart ${item.id}</h2>
-    <table>
+    <table id = "QJS">
         <thead>
         <tr>
             <th>Item-ID</th>
             <th>Item-Name</th>
             <th>Item-Price</th>
+            <th>Item-Quantity</th>
         </tr>
         </thead>
         <tbody>
@@ -172,6 +174,7 @@
             <td th:text="${item.id}"></td>
             <td th:text="${item.Product_name}"></td>
             <td th:text="${item.price}"></td>
+            <td>1</td>
         </tr>
         </tbody>
 
@@ -180,6 +183,46 @@
         <button type="submit">Checkout</button>
     </form>
 </div>
+<script>
+    let table = document.getElementById("QJS");
+    let tableBody = Array.from(table.children).find(elem => elem.tagName === "TBODY");
+    let tableRows = Array.from(tableBody.children);
 
+    let items = [];
+
+    for (const row of tableRows) {
+      let id = row.children[0].innerHTML;
+      let name = row.children[1].innerHTML;
+      let price = row.children[2].innerHTML;
+      let quantity = row.children[3].innerHTML;
+
+      items.push({ id, name, price, quantity })
+
+      row.remove()
+    }
+
+    let modifiedItems = {};
+
+    items.forEach(item => {
+      const { id, name, price, quantity } = item
+
+      if (!modifiedItems[name]) {
+        modifiedItems[name] = { id, name, price, quantity: quantity.length > 1 ? parseInt(quantity) : 1 }
+      } else {
+        modifiedItems[name].quantity++;
+      }
+    })
+
+    for (const item of Object.values(modifiedItems)) {
+      let newRow = document.createElement("tr");
+
+      for (const value of Object.values(item)) {
+        let rowData = document.createElement("td")
+        rowData.innerHTML = value;
+        newRow.appendChild(rowData)
+      }
+      tableBody.appendChild(newRow)
+    }
+</script>
 </body>
 </html>

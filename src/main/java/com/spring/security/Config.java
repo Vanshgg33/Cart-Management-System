@@ -10,7 +10,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -20,12 +22,15 @@ import org.springframework.security.web.SecurityFilterChain;
 public class Config {
     @Autowired
     private UserDetailsService userDetailsService;
-
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.
                 authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/cart", "/login", "/register").permitAll()
+                        .requestMatchers("/", "/cart", "/login", "/register","/delete","/save").permitAll()
                         .requestMatchers("/checkout").authenticated()
                 )
                 .formLogin(form -> form
@@ -33,10 +38,8 @@ public class Config {
                         .defaultSuccessUrl("/checkout", true)
                         .permitAll()
                 )
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/loging/")
-                        .permitAll()
-                );
+
+              ;
         httpSecurity.csrf(csrf -> csrf.disable());
 
 
@@ -46,7 +49,7 @@ public class Config {
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
+        provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
         provider.setUserDetailsService(userDetailsService);
         return provider;
     }
