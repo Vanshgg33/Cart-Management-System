@@ -37,7 +37,7 @@ private PasswordEncoder passwordEncoder;
 
 
 
-    @PostMapping ("/cart")
+    @GetMapping ("/cart")
     public ModelAndView add(Item item) {
         repo.save(item);
         ModelAndView mv = new ModelAndView();

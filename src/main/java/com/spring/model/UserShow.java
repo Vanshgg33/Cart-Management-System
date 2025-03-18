@@ -3,21 +3,19 @@ package com.spring.model;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
-public class UserShow  implements UserDetails {
-private User u1;
+public class UserShow implements UserDetails {
+    private final User u1;
 
     public UserShow(User u1) {
-        this.u1=u1;
+        this.u1 = u1;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("User"));
+        return Collections.singleton(new SimpleGrantedAuthority("USER")); // Use uppercase for roles
     }
 
     @Override
@@ -32,21 +30,21 @@ private User u1;
 
     @Override
     public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
+        return true; // Or return u1.isAccountNonExpired() if available in User model
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return true; // Or return u1.isAccountNonLocked() if available
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+        return true; // Or return u1.isCredentialsNonExpired() if available
     }
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return true; // Or return u1.isEnabled() if available
     }
 }

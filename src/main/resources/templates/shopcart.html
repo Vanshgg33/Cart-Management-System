@@ -114,7 +114,7 @@
 <ul class="sidenav">
     <li><a class="active" th:href="@{/home}">Home</a></li>
     <li><a th:href="@{/register}">Register</a></li>
-    <li><a th:href="@{/login}">Login</a></li>
+    <li><a th:href="@{/auth/login}">Login</a></li>
     <li><a th:href="@{/about}">About</a></li>
 </ul>
 
@@ -126,8 +126,8 @@
         <h3>Smart TV</h3>
         <p>50-inch 4K Ultra HD Smart TV</p>
         <p><strong>$500</strong></p>
-        <form th:action="@{/cart}" method="post">
-            <input type="hidden" name="Product_name" th:value="TV">
+        <form th:action="@{/cart}" method="get">
+            <input type="hidden" name="productName" th:value="TV">
             <input type="hidden" name="price" th:value="500">
             <button type="submit">Add to Cart</button>
         </form>
@@ -138,8 +138,8 @@
         <h3>Laptop</h3>
         <p>High-performance laptop with SSD</p>
         <p><strong>$1000</strong></p>
-        <form th:action="cart" method="post">
-            <input type="hidden" name="Product_name" th:value="Laptop">
+        <form th:action="cart" method="get">
+            <input type="hidden" name="productName" th:value="Laptop">
             <input type="hidden" name="price" th:value="1000">
             <button type="submit">Add to Cart</button>
         </form>
@@ -150,8 +150,8 @@
         <h3>Smartphone</h3>
         <p>Latest model with AMOLED display</p>
         <p><strong>$700</strong></p>
-        <form th:action="@{/cart}" method="post">
-            <input type="hidden" name="Product_name" th:value="Phone">
+        <form th:action="@{/cart}" method="get">
+            <input type="hidden" name="productName" th:value="Phone">
             <input type="hidden" name="price" th:value="700">
             <button type="submit">Add to Cart</button>
         </form>
@@ -160,69 +160,74 @@
 
 <div class="cart">
     <h2>Shopping Cart ${item.id}</h2>
-    <table id = "QJS">
+    <table id="QJS">
         <thead>
         <tr>
             <th>Item-ID</th>
             <th>Item-Name</th>
             <th>Item-Price</th>
-            <th>Item-Quantity</th>
+             <th>Item-Quantity</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="item :${item}">
+        <tr th:each="item : ${items}">
             <td th:text="${item.id}"></td>
-            <td th:text="${item.Product_name}"></td>
+            <td th:text="${item.productName}"></td>
             <td th:text="${item.price}"></td>
             <td>1</td>
         </tr>
         </tbody>
-
     </table>
-    <form th:action="@{/checkout}" method="post">
+    <form th:action="@{/checkout}" method="get">
         <button type="submit">Checkout</button>
     </form>
 </div>
 <script>
     let table = document.getElementById("QJS");
-    let tableBody = Array.from(table.children).find(elem => elem.tagName === "TBODY");
-    let tableRows = Array.from(tableBody.children);
+  let tableBody = table.querySelector("tbody");
+  let tableRows = Array.from(tableBody.children);
 
-    let items = [];
+  let items = [];
 
-    for (const row of tableRows) {
-      let id = row.children[0].innerHTML;
-      let name = row.children[1].innerHTML;
-      let price = row.children[2].innerHTML;
-      let quantity = row.children[3].innerHTML;
 
-      items.push({ id, name, price, quantity })
+  for (const row of tableRows) {
+    let id = row.children[0].innerText.trim();
+    let name = row.children[1].innerText.trim();
+    let price = row.children[2].innerText.trim();
+    let quantity = parseInt(row.children[3].innerText.trim(), 10) || 1;
 
-      row.remove()
+    items.push({ id, name, price, quantity });
+  }
+
+
+  tableBody.innerHTML = "";
+
+  let modifiedItems = {};
+
+  // Consolidate duplicate items
+  items.forEach(item => {
+    const { id, name, price, quantity } = item;
+
+    if (!modifiedItems[name]) {
+      modifiedItems[name] = { id, name, price, quantity };
+    } else {
+      modifiedItems[name].quantity += quantity; // Increment quantity properly
     }
+  });
 
-    let modifiedItems = {};
 
-    items.forEach(item => {
-      const { id, name, price, quantity } = item
+  Object.values(modifiedItems).forEach(item => {
+    let newRow = document.createElement("tr");
 
-      if (!modifiedItems[name]) {
-        modifiedItems[name] = { id, name, price, quantity: quantity.length > 1 ? parseInt(quantity) : 1 }
-      } else {
-        modifiedItems[name].quantity++;
-      }
-    })
+    Object.values(item).forEach(value => {
+      let rowData = document.createElement("td");
+      rowData.innerText = value;
+      newRow.appendChild(rowData);
+    });
 
-    for (const item of Object.values(modifiedItems)) {
-      let newRow = document.createElement("tr");
+    tableBody.appendChild(newRow);
+  });
 
-      for (const value of Object.values(item)) {
-        let rowData = document.createElement("td")
-        rowData.innerHTML = value;
-        newRow.appendChild(rowData)
-      }
-      tableBody.appendChild(newRow)
-    }
 </script>
 </body>
 </html>

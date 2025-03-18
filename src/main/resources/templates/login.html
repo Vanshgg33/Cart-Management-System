@@ -122,7 +122,6 @@ if (!response.ok) throw new Error("Login failed");
 const data = await response.json();
 localStorage.setItem("jwtToken", data.token); // Store token
 
-// Create a new form for the redirect
 const form = document.createElement('form');
 form.method = 'GET';
 form.action = '/checkout';

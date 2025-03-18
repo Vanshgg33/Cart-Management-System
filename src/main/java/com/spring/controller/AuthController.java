@@ -2,13 +2,13 @@ package com.spring.controller;
 
 import com.spring.jwt.Jwt_Util;
 import com.spring.jwt.LoginRequest;
+import com.spring.model.User;
+import com.spring.model.UserShow;
+import com.spring.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -18,21 +18,27 @@ import java.util.Collections;
 public class AuthController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
     private Jwt_Util jwtUtil;
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserRepository userRepository; // Fetch user manually
 
-    @PostMapping( value = "/login" ,consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    @Autowired
+    private PasswordEncoder passwordEncoder; // Inject PasswordEncoder
+
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        // Find user by username
+        User user = userRepository.findByUsername(request.getUsername());
+        if (user == null || !passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new BadCredentialsException("Invalid username or password");
+        }
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
+        // Generate JWT token
+        UserShow userDetails = new UserShow(user);
         String token = jwtUtil.generateToken(userDetails.getUsername());
-          System.out.println(request.getPassword() + request.getUsername());
-        return ResponseEntity.ok(Collections.singletonMap("token", token)); // Return token as JSON
+
+        return ResponseEntity.ok(Collections.singletonMap("token", token)); // Return JWT token
     }
 }
+    
