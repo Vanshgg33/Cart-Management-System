@@ -90,11 +90,11 @@
 <div class="container">
     <div class="auth-box">
         <h2>Login User</h2>
-        <form th:action="@{/login}" method="POST">
-            <label>Username:</label>
-            <input type="text" name="username" placeholder="Username" required>
-            <label>Password:</label>
-            <input type="password" name="password" placeholder="Enter Your Password" required>
+        <form id="loginForm" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter Your Password" required>
             <button type="submit">Login</button>
         </form>
         <p class="register-link">
@@ -102,5 +102,56 @@
         </p>
     </div>
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+document.getElementById("loginForm").addEventListener("submit", async function(event) {
+event.preventDefault();
+
+const username = document.getElementById("username").value;
+const password = document.getElementById("password").value;
+
+try {
+const response = await fetch("/auth/login", {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify({ username, password })
+});
+
+if (!response.ok) throw new Error("Login failed");
+
+const data = await response.json();
+localStorage.setItem("jwtToken", data.token); // Store token
+
+// Create a new form for the redirect
+const form = document.createElement('form');
+form.method = 'GET';
+form.action = '/checkout';
+
+// Add token to headers via fetch instead of redirect
+setTimeout(() => {
+fetch('/checkout', {
+method: 'GET',
+headers: {
+'Authorization': 'Bearer ' + data.token
+}
+})
+.then(response => {
+if (response.ok) {
+window.location.href = '/checkout';
+} else {
+throw new Error("Checkout access failed");
+}
+})
+.catch(error => {
+alert("Error accessing checkout page: " + error.message);
+});
+}, 500);
+} catch (error) {
+alert("Login failed! Check username/password.");
+}
+});
+});
+</script>
+
 </body>
 </html>

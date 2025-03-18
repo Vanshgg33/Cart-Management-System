@@ -25,7 +25,7 @@ public class Controller {
     @Autowired
     UserRepository userRepository;
 @Autowired
-    private PasswordEncoder passwordEncoder;
+private PasswordEncoder passwordEncoder;
 
 
     @GetMapping("/")
@@ -42,12 +42,12 @@ public class Controller {
         repo.save(item);
         ModelAndView mv = new ModelAndView();
         mv.addObject("obj", item);
-        mv.setViewName("Shopcart");
+        mv.setViewName("shopcart");
 
         List<Item> itemlist = repo.findAll();  // Fetch all items from the database
 
         mv.addObject("items", itemlist);
-        System.out.println(itemlist);
+        System.out.println("item added");
 return mv;
     }
 
@@ -56,7 +56,7 @@ public String h(){
         return "/";
 }
 
-    @GetMapping("/login")
+    @GetMapping("/auth/login")
     public String lo(){
         return "login";
     }

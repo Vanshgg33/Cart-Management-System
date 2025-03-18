@@ -11,7 +11,7 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
-    String Product_name;
+    String productName;
     int price;
 
 }

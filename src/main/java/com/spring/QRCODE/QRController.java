@@ -34,14 +34,15 @@ public class QRController {
     @Autowired
     private ItemReposiotry itemRepository;  // Directly using repository
 
-    @GetMapping
+@GetMapping
     public ModelAndView generateQR() {
+    System.out.println("Entering generateQR()");
         List<Item> cartlist = itemRepository.findAll();  // Fetch data directly
         String qrText = generateQRText(cartlist);
         String filePath = generateQRCodeFile(qrText);  // Save QR code to file
         String qrBase64 = generateQRCodeBase64(qrText);  // Convert to Base64
 
-        ModelAndView mv = new ModelAndView("checkout");
+        ModelAndView mv = new ModelAndView("checkoutPage");
         mv.addObject("cartlist", cartlist);
         mv.addObject("qrCodePath", filePath);
         mv.addObject("qrCode", qrBase64);
@@ -52,9 +53,10 @@ public class QRController {
         StringBuilder sb = new StringBuilder();
         for (Item item : cartlist) {
             sb.append(item.getId()).append(" - ")
-                    .append(item.getProduct_name()).append(" - ₹")
+                    .append(item.getProductName()).append(" - ₹")
                     .append(item.getPrice()).append("\n");
         }
+
         return sb.toString();
     }
 
@@ -78,6 +80,7 @@ public class QRController {
     }
 
     private String generateQRCodeBase64(String qrText) {
+        System.out.println("here too");
         try {
             HashMap<EncodeHintType, Object> hints = new HashMap<>();
             hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
@@ -94,5 +97,6 @@ public class QRController {
             e.printStackTrace();
             return null;
         }
+
     }
 }

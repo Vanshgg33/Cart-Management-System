@@ -138,7 +138,7 @@
         <h3>Laptop</h3>
         <p>High-performance laptop with SSD</p>
         <p><strong>$1000</strong></p>
-        <form th:action="@{/cart}" method="post">
+        <form th:action="cart" method="post">
             <input type="hidden" name="Product_name" th:value="Laptop">
             <input type="hidden" name="price" th:value="1000">
             <button type="submit">Add to Cart</button>
@@ -170,7 +170,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="item :${items}">
+        <tr th:each="item :${item}">
             <td th:text="${item.id}"></td>
             <td th:text="${item.Product_name}"></td>
             <td th:text="${item.price}"></td>
