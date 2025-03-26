@@ -43,4 +43,10 @@ Create a new Java class inside the `com.spring.security` package named `Config.j
 ## Future Enhancements
 - Add **user roles** (admin, user, etc.).
 - Use a **database** to store user credentials instead of hardcoded properties.
-- Implement **JWT-based authentication** for better security.
+
+
+## Oath2 Details
+- Client id - in env file
+- Client secret - in env file in root
+- Oath path - http://localhost:8081/oauth2/authorization/google
+

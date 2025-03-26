@@ -7,100 +7,107 @@
     <!-- Your existing styles here -->
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            background-color: #f8f9fa;
-            color: #333;
-        }
+        font-family: 'Arial', sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+        background: linear-gradient(to bottom, #0b1d0b, #043d04); /* Dark green gradient */
+        color: white;
+    }
 
-        h2 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 30px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #3498db;
-        }
+    h2 {
+        text-align: center;
+        font-size: 2rem;
+        color: #4CAF50; /* Bright green */
+        font-weight: bold;
+        margin-bottom: 30px;
+    }
 
-        h3 {
-            color: #2c3e50;
-            margin-top: 25px;
-        }
+    h3 {
+        color: #4CAF50;
+        text-align: center;
+    }
 
-        .error-message {
-            color: red;
-            padding: 20px;
-            text-align: center;
-            font-weight: bold;
-            display: none;
-            background-color: #ffebee;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
+    #content-container {
+        display: block;
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: rgba(0, 0, 0, 0.85); /* Semi-transparent black */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(76, 175, 80, 0.3);
+    }
 
-        #content-container {
-            display: block;
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 30px;
+        background-color: #0b1d0b;
+        border-radius: 10px;
+        overflow: hidden;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 30px;
-        }
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        font-size: 18px;
+        color: white;
+    }
 
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
+    th {
+        background-color: #4CAF50;
+        color: black;
+        font-weight: bold;
+    }
 
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-            color: #555;
-        }
+    tr:nth-child(even) {
+        background-color: #132a13;
+    }
 
-        tr:hover {
-            background-color: #f5f5f5;
-        }
+    tr:nth-child(odd) {
+        background-color: #0d220d;
+    }
 
-        .qr-container {
-            text-align: center;
-            margin: 30px 0;
-        }
+    tr:hover {
+        background-color: #1a3d1a;
+    }
 
-        .qr-container img {
-            max-width: 200px;
-            border: 1px solid #ddd;
-            padding: 10px;
-            background-color: white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+    .qr-container {
+        text-align: center;
+        margin: 30px 0;
+    }
 
-        .checkout-btn {
-            display: block;
-            width: 200px;
-            margin: 30px auto;
-            padding: 12px 20px;
-            background-color: #3498db;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
+    .qr-container img {
+        max-width: 200px;
+        border: 2px solid #4CAF50;
+        padding: 10px;
+        background-color: black;
+        box-shadow: 0 2px 5px rgba(76, 175, 80, 0.3);
+        border-radius: 10px;
+    }
 
-        .checkout-btn:hover {
-            background-color: #2980b9;
-        }
+    .checkout-btn {
+        display: block;
+        width: 220px;
+        margin: 30px auto;
+        padding: 12px 20px;
+        background-color: #4CAF50;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s, transform 0.2s;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 1.1rem;
+    }
+
+    .checkout-btn:hover {
+        background-color: #45a049;
+        transform: scale(1.05);
+    }
+
     </style>
 </head>
 
@@ -143,58 +150,67 @@
     <a href="#" id="payment-button" class="checkout-btn">Proceed to Payment</a>
 </div>
 <script>
-    console.log("i am here friends");
-    document.addEventListener("DOMContentLoaded", function () {
-        const token = localStorage.getItem("jwtToken");
-        if (!token) {
-            alert("No authentication token found. Redirecting to login...");
-            window.location.href = "/auth/login";
-        }
-    });
-  let table = document.getElementById("QJS");
-  let tableBody = table.querySelector("tbody");
-  let tableRows = Array.from(tableBody.children);
+    const token = localStorage.getItem("jwtToken");
 
-  let items = [];
+ if (!token) {
+     console.error("No token found!");
+     window.location.href = "/auth/login";
+ }
 
+ fetch("/checkout", {
+     method: "GET",
+     headers: {
+         "Authorization": `Bearer ${token}`,
+         "Content-Type": "application/json"
+     }
+ })
+ .then(response => response.json())
+ .then(data => console.log("Response:", data))
+ .catch(error => console.error("Error:", error));
+   let table = document.getElementById("QJS");
+   let tableBody = table.querySelector("tbody");
+   let tableRows = Array.from(tableBody.children);
 
-  for (const row of tableRows) {
-    let id = row.children[0].innerText.trim();
-    let name = row.children[1].innerText.trim();
-    let price = row.children[2].innerText.trim();
-    let quantity = parseInt(row.children[3].innerText.trim(), 10) || 1;
-
-    items.push({ id, name, price, quantity });
-  }
-
-
-  tableBody.innerHTML = "";
-
-  let modifiedItems = {};
-
-  // Consolidate duplicate items
-  items.forEach(item => {
-    const { id, name, price, quantity } = item;
-
-    if (!modifiedItems[name]) {
-      modifiedItems[name] = { id, name, price, quantity };
-    } else {
-      modifiedItems[name].quantity += quantity; // Increment quantity properly
-    }
-  });
+   let items = [];
 
 
-  Object.values(modifiedItems).forEach(item => {
-    let newRow = document.createElement("tr");
+   for (const row of tableRows) {
+     let id = row.children[0].innerText.trim();
+     let name = row.children[1].innerText.trim();
+     let price = row.children[2].innerText.trim();
+     let quantity = parseInt(row.children[3].innerText.trim(), 10) || 1;
 
-    Object.values(item).forEach(value => {
-      let rowData = document.createElement("td");
-      rowData.innerText = value;
-      newRow.appendChild(rowData);
-    });
+     items.push({ id, name, price, quantity });
+   }
 
-    tableBody.appendChild(newRow);
-  });
+
+   tableBody.innerHTML = "";
+
+   let modifiedItems = {};
+
+   // Consolidate duplicate items
+   items.forEach(item => {
+     const { id, name, price, quantity } = item;
+
+     if (!modifiedItems[name]) {
+       modifiedItems[name] = { id, name, price, quantity };
+     } else {
+       modifiedItems[name].quantity += quantity; // Increment quantity properly
+     }
+   });
+
+
+   Object.values(modifiedItems).forEach(item => {
+     let newRow = document.createElement("tr");
+
+     Object.values(item).forEach(value => {
+       let rowData = document.createElement("td");
+       rowData.innerText = value;
+       newRow.appendChild(rowData);
+     });
+
+     tableBody.appendChild(newRow);
+   });
 
 </script>
 </body>

@@ -35,21 +35,25 @@ public class Jwt_Filter extends OncePerRequestFilter {
         System.out.println("Request path: " + path);
 
         // Skip JWT validation for "/checkout" and other public paths
-        if ("/checkout".equals(path) || "/".equals(path) || "/cart".equals(path) ||
-                "/register".equals(path) || "/delete".equals(path) || "/save".equals(path) ||
+        if ("/".equals(path) || "/cart".equals(path) ||
+                "/register".equals(path) || "/user".equals(path) || "http://localhost:8081/login/oauth2/code/google".equals(path)|| "/delete".equals(path) || "/save".equals(path) ||
                 "/auth/login".equals(path)) {
             System.out.println("Skipping JWT validation for public path: " + path);
             filterChain.doFilter(request, response);
             return;
         }
+      else {
+          System.out.println("VALIDATING " + path);
+        }
 
         final String authorizationHeader = request.getHeader("Authorization");
+      System.out.println(authorizationHeader + "lol");
         String username = null;
         String jwtToken = null;
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwtToken = authorizationHeader.substring(7);
-
+            System.out.println("helloji epired");
             try {
                 username = jwtUtil.extractUsername(jwtToken);
             } catch (ExpiredJwtException e) {
