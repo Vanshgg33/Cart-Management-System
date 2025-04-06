@@ -17,15 +17,14 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 
-
 @org.springframework.stereotype.Controller
 public class Controller {
     @Autowired
     ItemReposiotry repo;
     @Autowired
     UserRepository userRepository;
-@Autowired
-private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @GetMapping("/")
@@ -34,10 +33,7 @@ private PasswordEncoder passwordEncoder;
     }
 
 
-
-
-
-    @GetMapping ("/cart")
+    @GetMapping("/cart")
     public ModelAndView add(Item item) {
         repo.save(item);
         ModelAndView mv = new ModelAndView();
@@ -48,37 +44,35 @@ private PasswordEncoder passwordEncoder;
 
         mv.addObject("items", itemlist);
         System.out.println("item added");
-return mv;
+        return mv;
     }
 
-@GetMapping("/delete")
-public String h(){
-        return "/";
-}
+
 
     @GetMapping("/auth/login")
-    public String lo(){
+    public String lo() {
         return "login";
     }
 
 
     @GetMapping("register")
-    public String lol(){
+    public String lol() {
         return "Register";
     }
 
     @GetMapping("/save")
-    public ModelAndView register(User user){
+    public ModelAndView register(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         ModelAndView mv = new ModelAndView();
-        mv.addObject("obj",user);
+        mv.addObject("obj", user);
         mv.setViewName("/shopcart");
         return mv;
     }
+
     @PostMapping("/delete")
-    public ModelAndView del(){
-      repo.deleteAll();
+    public ModelAndView del() {
+        repo.deleteAll();
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/shop");
         return mv;

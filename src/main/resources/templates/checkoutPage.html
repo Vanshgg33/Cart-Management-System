@@ -152,66 +152,74 @@
 <script>
     const token = localStorage.getItem("jwtToken");
 
- if (!token) {
-     console.error("No token found!");
-     window.location.href = "/auth/login";
- }
+    if (!token) {
+        console.error("No token found!");
+        window.location.href = "/auth/login"; // Redirect if no token is found
+    } else {
+        fetch("/checkout", {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => {
+            if (response.status === 401) { // Check if JWT is expired or invalid
+                console.error("Unauthorized! Redirecting to login...");
+                localStorage.removeItem("jwtToken"); // Clear expired token
+                window.location.href = "/auth/login"; // Redirect to login
+                return;
+            }
+            return response.json();
+        })
+        .then(data => console.log("Response:", data))
+        .catch(error => console.error("Error:", error));
+    }
 
- fetch("/checkout", {
-     method: "GET",
-     headers: {
-         "Authorization": `Bearer ${token}`,
-         "Content-Type": "application/json"
-     }
- })
- .then(response => response.json())
- .then(data => console.log("Response:", data))
- .catch(error => console.error("Error:", error));
-   let table = document.getElementById("QJS");
-   let tableBody = table.querySelector("tbody");
-   let tableRows = Array.from(tableBody.children);
+    // Quantity logic (unchanged)
+    let table = document.getElementById("QJS");
+    let tableBody = table.querySelector("tbody");
+    let tableRows = Array.from(tableBody.children);
 
-   let items = [];
+    let items = [];
 
+    for (const row of tableRows) {
+        let id = row.children[0].innerText.trim();
+        let name = row.children[1].innerText.trim();
+        let price = row.children[2].innerText.trim();
+        let quantity = parseInt(row.children[3].innerText.trim(), 10) || 1;
 
-   for (const row of tableRows) {
-     let id = row.children[0].innerText.trim();
-     let name = row.children[1].innerText.trim();
-     let price = row.children[2].innerText.trim();
-     let quantity = parseInt(row.children[3].innerText.trim(), 10) || 1;
+        items.push({ id, name, price, quantity });
+    }
 
-     items.push({ id, name, price, quantity });
-   }
+    tableBody.innerHTML = "";
 
+    let modifiedItems = {};
 
-   tableBody.innerHTML = "";
+    // Consolidate duplicate items
+    items.forEach(item => {
+        const { id, name, price, quantity } = item;
 
-   let modifiedItems = {};
+        if (!modifiedItems[name]) {
+            modifiedItems[name] = { id, name, price, quantity };
+        } else {
+            modifiedItems[name].quantity += quantity; // Increment quantity properly
+        }
+    });
 
-   // Consolidate duplicate items
-   items.forEach(item => {
-     const { id, name, price, quantity } = item;
+    Object.values(modifiedItems).forEach(item => {
+        let newRow = document.createElement("tr");
 
-     if (!modifiedItems[name]) {
-       modifiedItems[name] = { id, name, price, quantity };
-     } else {
-       modifiedItems[name].quantity += quantity; // Increment quantity properly
-     }
-   });
+        Object.values(item).forEach(value => {
+            let rowData = document.createElement("td");
+            rowData.innerText = value;
+            newRow.appendChild(rowData);
+        });
 
-
-   Object.values(modifiedItems).forEach(item => {
-     let newRow = document.createElement("tr");
-
-     Object.values(item).forEach(value => {
-       let rowData = document.createElement("td");
-       rowData.innerText = value;
-       newRow.appendChild(rowData);
-     });
-
-     tableBody.appendChild(newRow);
-   });
+        tableBody.appendChild(newRow);
+    });
 
 </script>
+
 </body>
 </html>

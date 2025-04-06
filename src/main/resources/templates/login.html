@@ -9,79 +9,85 @@
             box-sizing: border-box;
         }
         body {
-            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-            background-color: rgb(83, 226, 233);
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #0d1a0d, #051905);
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100vh;
-            position: relative;
-        }
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 1;
+            color: white;
         }
         .container {
-            position: relative;
-            background: linear-gradient(135deg,#53c8ee,#0077d8);
+            background: #0c3b0c;
             width: 400px;
             padding: 2em;
             border-radius: 10px;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
             text-align: center;
-            z-index: 2;
-            color: aliceblue;
         }
         .auth-box h2 {
-            color: #fff;
+            color: #36d436;
             margin-bottom: 1em;
-            font-weight: 700;
+            font-weight: bold;
             font-size: 1.8em;
         }
         .auth-box label {
             font-size: 1em;
-            color: #fff;
+            color: #c2f0c2;
             display: block;
             text-align: left;
             margin: 0.5em 0 0.4em;
         }
-        .auth-box input[type="text"],
-        .auth-box input[type="password"] {
+        .auth-box input {
             width: 100%;
             padding: 0.8em;
             margin-bottom: 1.2em;
-            border: 1px solid #e2b2b2;
+            border: 1px solid #36d436;
             border-radius: 5px;
             font-size: 1em;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            background: #071a07;
+            color: white;
         }
         .auth-box button {
             width: 100%;
             padding: 0.8em;
-            background: #0077d8;
-            color: white;
+            background: #36d436;
+            color: black;
             border: none;
             border-radius: 5px;
             font-size: 1em;
+            font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
         }
         .auth-box button:hover {
-            background: #005bb5;
+            background: #2bb02b;
+        }
+        .google-login {
+            margin-top: 10px;
+            background: white;
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            padding: 0.8em;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .google-login img {
+            width: 20px;
+            margin-right: 10px;
+        }
+        .google-login:hover {
+            background: #ddd;
         }
         .register-link {
             margin-top: 1em;
-            color: #fff;
+            color: #c2f0c2;
         }
         .register-link a {
-            color: #ffea00;
+            color: #36d436;
             text-decoration: none;
         }
     </style>
@@ -97,60 +103,51 @@
             <input type="password" id="password" name="password" placeholder="Enter Your Password" required>
             <button type="submit">Login</button>
         </form>
+        <div class="google-login" onclick="window.location.href='/oauth2/authorization/google'">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo">
+            Login with Google
+        </div>
         <p class="register-link">
             New here? <a th:href="@{/Register}">Create an account</a>.
         </p>
     </div>
 </div>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-document.getElementById("loginForm").addEventListener("submit", async function(event) {
-event.preventDefault();
-
-const username = document.getElementById("username").value;
-const password = document.getElementById("password").value;
-
-try {
-const response = await fetch("/auth/login", {
-method: "POST",
-headers: { "Content-Type": "application/json" },
-body: JSON.stringify({ username, password })
-});
-
-if (!response.ok) throw new Error("Login failed");
-
-const data = await response.json();
-localStorage.setItem("jwtToken", data.token); // Store token
-
-const form = document.createElement('form');
-form.method = 'GET';
-form.action = '/checkout';
-
-// Add token to headers via fetch instead of redirect
-setTimeout(() => {
-fetch('/checkout', {
-method: 'GET',
-headers: {
-'Authorization': 'Bearer ' + data.token
-}
-})
-.then(response => {
-if (response.ok) {
-window.location.href = '/checkout';
-} else {
-throw new Error("Checkout access failed");
-}
-})
-.catch(error => {
-alert("Error accessing checkout page: " + error.message);
-});
-}, 500);
-} catch (error) {
-alert("Login failed! Check username/password.");
-}
-});
-});
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("loginForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            try {
+                const response = await fetch("/auth/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password })
+                });
+                if (!response.ok) throw new Error("Login failed");
+                const data = await response.json();
+                localStorage.setItem("jwtToken", data.token);
+                setTimeout(() => {
+                    fetch('/checkout', {
+                        method: 'GET',
+                        headers: { 'Authorization': 'Bearer ' + data.token }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.href = '/checkout';
+                        } else {
+                            throw new Error("Checkout access failed");
+                        }
+                    })
+                    .catch(error => {
+                        alert("Error accessing checkout page: " + error.message);
+                    });
+                }, 500);
+            } catch (error) {
+                alert("Login failed! Check username/password.");
+            }
+        });
+    });
 </script>
-
 </body>
 </html>
