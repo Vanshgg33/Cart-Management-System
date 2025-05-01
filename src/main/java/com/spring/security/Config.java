@@ -55,7 +55,7 @@ public class Config {
 
                         .requestMatchers("/", "/http://localhost:8081/login/oauth2/code/google", "/cart", "/user", "/register","/delete","/save","/auth/login").permitAll()
 
-                                .requestMatchers("/checkout").permitAll()
+                                .requestMatchers("/checkout","/auth/validate").permitAll()
                                 .requestMatchers("/favicon.ico").permitAll()
 
 

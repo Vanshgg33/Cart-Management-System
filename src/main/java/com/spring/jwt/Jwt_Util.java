@@ -1,5 +1,7 @@
 package com.spring.jwt;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -36,13 +38,31 @@ public String extractUsername(String token){
 public boolean validateToken(String token,String username){
     return username.equals(extractUsername(token)) && !isTokenExpired(token);
 }
-private boolean isTokenExpired(String token){
-    return Jwts.parser()
-            .setSigningKey(getSigningkey())
-            .build()
-            .parseClaimsJws(token)
-            .getBody()
-            .getExpiration()
-            .before(new Date());
+
+public boolean validateToken2(String token){
+    try{
+        Jwts.parser()
+                .setSigningKey(secret_key)
+                .build()
+                .parseClaimsJwt(token);
+        return true;
+    } catch (JwtException | IllegalArgumentException e){
+        return false;
+    }
 }
+    public boolean isTokenExpired(String token) {
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(getSigningkey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            return claims.getExpiration().before(new Date());
+        } catch (JwtException e) {
+
+            return true; // Treat any exception as expired/invalid
+        }
+    }
+
 }

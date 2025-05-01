@@ -128,13 +128,13 @@
                 const data = await response.json();
                 localStorage.setItem("jwtToken", data.token);
                 setTimeout(() => {
-                    fetch('/checkout', {
+                    fetch('/', {
                         method: 'GET',
                         headers: { 'Authorization': 'Bearer ' + data.token }
                     })
                     .then(response => {
                         if (response.ok) {
-                            window.location.href = '/checkout';
+                            window.location.href = '/';
                         } else {
                             throw new Error("Checkout access failed");
                         }

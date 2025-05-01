@@ -5,7 +5,11 @@ import com.spring.jwt.LoginRequest;
 import com.spring.model.User;
 import com.spring.model.UserShow;
 import com.spring.repo.UserRepository;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -43,6 +47,33 @@ public class AuthController {
 
         return ResponseEntity.ok(Collections.singletonMap("token", token)); // Return JWT token
     }
+    @PostMapping("/validate")
+    public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.badRequest().body("Missing or malformed Authorization header");
+        }
+
+        String token = authHeader.substring(7);
+        try {
+            boolean expired = jwtUtil.isTokenExpired(token);
+            if (expired) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token is expired");
+            } else {
+                return ResponseEntity.ok("Token is valid");
+            }
+        } catch (ExpiredJwtException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token is expired");
+        } catch (MalformedJwtException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Malformed token");
+        } catch (SignatureException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token signature");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or unreadable token");
+        }
+    }
+
+
+
 
     @GetMapping("/user")
     public Map<String, Object> getUser(@AuthenticationPrincipal OAuth2User oauth2User) {

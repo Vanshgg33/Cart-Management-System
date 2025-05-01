@@ -1,7 +1,6 @@
 package com.spring.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -12,6 +11,8 @@ public class User {
     private String username;
     private String password;
 
+@OneToOne
+    private Cart cart;
 
 
 }
