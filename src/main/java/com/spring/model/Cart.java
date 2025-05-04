@@ -5,15 +5,17 @@ import lombok.Data;
 
 import java.util.List;
 
-@Entity
 @Data
+@Entity
 public class Cart {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @OneToOne
-    private User user;
-    @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartItem> itemList;
+    private int cartid;
 
+    @OneToOne(mappedBy = "cart", fetch = FetchType.LAZY)
+    private User user;
+
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> itemList;
 }

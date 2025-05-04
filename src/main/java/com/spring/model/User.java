@@ -6,13 +6,15 @@ import lombok.Data;
 @Data
 @Entity
 public class User {
+
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int userId;
+
     private String username;
     private String password;
 
-@OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cart_id", referencedColumnName = "cartid")
     private Cart cart;
-
-
 }

@@ -9,7 +9,9 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -41,11 +43,22 @@ public class AuthController {
             throw new BadCredentialsException("Invalid username or password");
         }
 
+
         // Generate JWT token
         UserShow userDetails = new UserShow(user);
         String token = jwtUtil.generateToken(userDetails.getUsername());
+        ResponseCookie cookie = ResponseCookie.from("jwtToken", token)
+                .httpOnly(true)
+                .path("/")
+                .maxAge(24 * 60 * 60) // 1 day
+                .secure(false) // set to true in production (HTTPS)
+                .sameSite("Lax")
+                .build();
 
-        return ResponseEntity.ok(Collections.singletonMap("token", token)); // Return JWT token
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(Collections.singletonMap("token", token)); // Return JWT token
     }
     @PostMapping("/validate")
     public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String authHeader) {
@@ -59,7 +72,19 @@ public class AuthController {
             if (expired) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token is expired");
             } else {
-                return ResponseEntity.ok("Token is valid");
+
+                ResponseCookie cookie = ResponseCookie.from("jwtToken", token)
+                        .httpOnly(true)
+                        .path("/")
+                        .maxAge(24 * 60 * 60) // 1 day
+                        .secure(false) // set to true in production (HTTPS)
+                        .sameSite("Lax")
+                        .build();
+
+                return ResponseEntity.ok()
+                        .header("Set-Cookie", cookie.toString())
+                        .body("Token is valid and stored in cookie and token is valid ");
+
             }
         } catch (ExpiredJwtException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token is expired");

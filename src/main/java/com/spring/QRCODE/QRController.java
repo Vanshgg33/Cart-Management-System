@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import com.spring.repo.ItemReposiotry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +36,8 @@ public class QRController {
     private ItemReposiotry itemRepository;  // Directly using repository
 
 @GetMapping
-    public ModelAndView generateQR() {
+    public ModelAndView generateQR(@CookieValue(value ="jwtToken",required=false)String token) {
+
     System.out.println("Entering generateQR()");
         List<Item> cartlist = itemRepository.findAll();  // Fetch data directly
         String qrText = generateQRText(cartlist);
@@ -52,7 +54,7 @@ public class QRController {
     private String generateQRText(List<Item> cartlist) {
         StringBuilder sb = new StringBuilder();
         for (Item item : cartlist) {
-            sb.append(item.getId()).append(" - ")
+            sb.append(item.getPrdouct_id()).append(" - ")
                     .append(item.getProductName()).append(" - ₹")
                     .append(item.getPrice()).append("\n");
         }

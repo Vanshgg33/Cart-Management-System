@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 90%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 14px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        input[type="number"] {
+            width: 60px;
+            padding: 6px;
+            text-align: center;
+        }
+
+        .total {
+            margin: 20px auto;
+            font-weight: bold;
+            text-align: right;
+            width: 90%;
+        }
+
+        @media (max-width: 600px) {
+            table, .total {
+                width: 100%;
+                font-size: 14px;
+            }
+
+            input[type="number"] {
+                width: 50px;
+            }
+        }
+
+        /* Initially hide the entire content */
+        #cartContent {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<h1 th:text="${name}"></h1>
+
+<h1>Your Shopping Cart</h1>
+
+<!-- Wrap all content in a container -->
+<div id="cartContent">
+    <table>
+        <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Price (₹)</th>
+            <th>Quantity</th>
+            <th>Total (₹)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${items}">
+            <!-- Display the product name -->
+            <td th:text="${item.item.productName}">Sample Name</td>
+
+            <!-- Display the price of the item -->
+            <td class="unit-price" th:text="${item.item.price}">100</td>
+
+            <!-- Quantity input field, with an onchange event to update the row total -->
+            <td>
+                <input type="number" class="quantity-input" value="1" min="1" onchange="updateRowTotal(this)">
+            </td>
+
+            <!-- Display the row total, which can be calculated in JavaScript based on the price and quantity -->
+            <td class="row-total">0</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="total">
+        Grand Total: ₹ <span id="grandTotal">0</span>
+    </div>
+</div>
+
+<script>
+    async function validateToken() {
+        const token = localStorage.getItem("jwtToken");
+        if (!token) {
+            window.location.href = "/auth/login";
+            return;
+        }
+
+        try {
+            const response = await fetch("/auth/validate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                // Token is valid, show the cart content
+                document.getElementById('cartContent').style.display = 'block';
+            } else {
+                window.location.href = "/auth/login"; // Invalid/expired token
+            }
+        } catch (err) {
+            console.error("Token validation error:", err);
+            window.location.href = "/auth/login";
+        }
+    }
+
+    // Run the token validation when the page loads
+    document.addEventListener("DOMContentLoaded", validateToken);
+
+    function updateRowTotal(input) {
+        const row = input.closest("tr");
+        const quantity = parseInt(input.value);
+        const unitPrice = parseFloat(row.querySelector(".unit-price").textContent);
+        const rowTotal = quantity * unitPrice;
+        row.querySelector(".row-total").textContent = rowTotal.toFixed(2);
+        updateGrandTotal();
+    }
+
+    function updateGrandTotal() {
+        let total = 0;
+        document.querySelectorAll(".row-total").forEach(td => {
+            const value = parseFloat(td.textContent);
+            if (!isNaN(value)) total += value;
+        });
+        document.getElementById("grandTotal").textContent = total.toFixed(2);
+    }
+</script>
+
+</body>
+</html>

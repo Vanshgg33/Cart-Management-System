@@ -8,8 +8,7 @@ import lombok.Data;
 @Entity
 public class Item {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    int id;
+    int prdouct_id;
     String productName;
     int price;
 
