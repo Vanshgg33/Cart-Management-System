@@ -53,9 +53,9 @@ public class Config {
                 .authorizeHttpRequests(auth -> auth
 
 
-                        .requestMatchers("/", "/http://localhost:8081/login/oauth2/code/google", "/cart", "/user", "/register","/delete","/save","/auth/login","/userCart").permitAll()
+                        .requestMatchers("/", "/http://localhost:8081/login/oauth2/code/google", "/cart", "/register","/save","/auth/login","/userCart","/AdminProduct","/admin_add").permitAll()
 
-                                .requestMatchers("/checkout","/auth/validate").permitAll()
+                                .requestMatchers("/checkout","/auth/validate","/style.css").permitAll()
                                 .requestMatchers("/favicon.ico").permitAll()
 
 

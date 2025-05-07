@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+</head>
+<body>
+<form action="/admin_add" method="post" enctype="multipart/form-data" id ="form">
+    <input type="text" name="name" placeholder="Product Name" required /><br />
+    <textarea name="description" placeholder="Description" required></textarea><br />
+    <input type="number" name="price" step="0.01" placeholder="Price" required /><br />
+    <input type="number" name="quantity" placeholder="Quantity" required /><br />
+    <input type="file" name="image" accept="image/*" required /><br />
+    <button type="submit">Add Product</button>
+</form>
+</body>
+<script>
+    document.querySelector('#form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+
+        const response = await fetch('/admin_add', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+        localStorage.setItem("newProduct", JSON.stringify(data));
+        window.location.href = "/";
+    });
+</script>
+</html>

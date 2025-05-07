@@ -3,106 +3,349 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Lumineux | Premium Lifestyle</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
     <style>
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes scaleUp {
-            from { transform: scale(0.95); }
-            to { transform: scale(1); }
-        }
-
-        body {
-            background: linear-gradient(135deg, #0f0f0f, #1b5e20);
-            color: white;
-            overflow-x: hidden;
+        /* Profile/account dropdown styles */
+        .nav-actions .dropdown {
             position: relative;
-            min-height: 100vh;
+            display: inline-block;
         }
-
-        .fade-in {
-            animation: fadeIn 0.8s ease-out;
+        .nav-actions .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 120%;
+            right: 0;
+            background: #fff;
+            min-width: 140px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            border-radius: 8px;
+            z-index: 200;
+            padding: 0.5rem 0;
         }
-
-        .scale-up:hover {
-            animation: scaleUp 0.3s ease-in-out forwards;
+        .nav-actions .dropdown:hover .dropdown-menu,
+        .nav-actions .dropdown:focus-within .dropdown-menu {
+            display: block;
+        }
+        .nav-actions .dropdown-menu .dropdown-item {
+            display: block;
+            padding: 1rem 1.5rem;
+            color: var(--color-primary);
+            font-size: 1.4rem;
+            text-decoration: none;
+            transition: background 0.2s;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        .nav-actions .dropdown-menu .dropdown-item:hover {
+            background: var(--color-gray-light);
+            color: var(--color-secondary);
+        }
+        .after-loading-3d {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            background: rgba(12,27,51,0.85);
+            z-index: 9998;
+            animation: fadeIn3d 0.7s;
+        }
+        @keyframes fadeIn3d {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .cube-3d {
+            width: 100px; height: 100px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: spinCube 2.5s cubic-bezier(.68,-0.55,.27,1.55) infinite;
+        }
+        .cube-3d .face {
+            position: absolute;
+            width: 100px; height: 100px;
+            background: linear-gradient(135deg, #c8996b 60%, #e8c39e 100%);
+            opacity: 0.95;
+            border: 2px solid #fff3;
+            box-shadow: 0 8px 24px #0002;
+        }
+        .cube-3d .front  { transform: rotateY(0deg) translateZ(50px);}
+        .cube-3d .back   { transform: rotateY(180deg) translateZ(50px);}
+        .cube-3d .right  { transform: rotateY(90deg) translateZ(50px);}
+        .cube-3d .left   { transform: rotateY(-90deg) translateZ(50px);}
+        .cube-3d .top    { transform: rotateX(90deg) translateZ(50px);}
+        .cube-3d .bottom { transform: rotateX(-90deg) translateZ(50px);}
+        @keyframes spinCube {
+            0%   { transform: rotateX(0deg) rotateY(0deg);}
+            100% { transform: rotateX(360deg) rotateY(360deg);}
         }
     </style>
 </head>
 <body>
-<nav class="bg-green-900 bg-opacity-90 shadow-xl p-6 flex justify-between items-center fixed top-0 left-0 w-full z-10 fade-in">
-    <a href="/">
-        <img src="assets/logo.png" alt="ShopCart Logo" class="h-12">
-    </a>
-    <div>
-        <a href="/userCart" class="px-6 py-3 bg-green-600 text-white rounded-full shadow-lg hover:bg-green-700 transition-all">Cart</a>
-        <a href="/auth/login" class="ml-4 px-6 py-3 bg-black text-white rounded-full shadow-lg hover:bg-gray-800 transition-all">Login</a>
-    </div>
-</nav>
-
-<div class="h-screen flex flex-col items-center justify-center text-center fade-in">
-    <h1 class="text-6xl font-bold">Welcome to <span class="text-green-400">ShopCart</span></h1>
-    <p class="text-xl text-gray-300 mt-4">The best place to find amazing products at unbeatable prices.</p>
-    <a href="#products" class="mt-6 px-8 py-4 bg-green-600 text-white rounded-full shadow-lg text-lg font-semibold hover:bg-green-700 transition-all">Start Shopping</a>
+<div class="loading-screen">
+    <div class="loading-icon"></div>
+    <div class="loading-text">Curating Excellence</div>
 </div>
 
-<div id="products" class="container mx-auto p-12 pt-20 fade-in">
-    <h2 class="text-5xl font-bold mb-8 text-center">Our Products</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-
-        <!-- TV -->
-        <div class="bg-black p-8 rounded-xl shadow-xl hover:shadow-2xl transition scale-up fade-in text-white">
-            <img src="assets/TV.png" alt="TV" class="w-full h-64 object-cover rounded-xl">
-            <h3 class="text-3xl font-semibold mt-4">Smart TV</h3>
-            <p class="text-xl text-green-400 mt-2">$500</p>
-            <form action="/cart" method="get" class="mt-6">
-                <input type="hidden" name="itemId" value="1">
-                <input type ="hidden" name = "productName" value = "TV">
-                <input type ="hidden" name = "price" value = 500>
-                <button type="submit" class="w-full px-6 py-3 bg-green-600 text-white rounded-full shadow-lg text-lg font-semibold hover:bg-green-700 transition-all">Add to Cart</button>
-            </form>
-        </div>
-
-        <!-- Laptop -->
-        <div class="bg-black p-8 rounded-xl shadow-xl hover:shadow-2xl transition scale-up fade-in text-white">
-            <img src="assets/laptop.png" alt="Laptop" class="w-full h-64 object-cover rounded-xl">
-            <h3 class="text-3xl font-semibold mt-4">Laptop</h3>
-            <p class="text-xl text-green-400 mt-2">$1000</p>
-            <form action="/cart" method="get" class="mt-6">
-                <input type="hidden" name="itemId" value="3">
-                <input type ="hidden" name = "productName" value = "Laptop">
-                <input type ="hidden" name = "price" value = 1000>
-                <button type="submit" class="w-full px-6 py-3 bg-green-600 text-white rounded-full shadow-lg text-lg font-semibold hover:bg-green-700 transition-all">Add to Cart</button>
-            </form>
-        </div>
-
-        <!-- Smartphone -->
-        <div class="bg-black p-8 rounded-xl shadow-xl hover:shadow-2xl transition scale-up fade-in text-white">
-            <img src="assets/phone.png" alt="Phone" class="w-full h-64 object-cover rounded-xl">
-            <h3 class="text-3xl font-semibold mt-4">Smartphone</h3>
-            <p class="text-xl text-green-400 mt-2">$700</p>
-            <form action="/cart" method="get" class="mt-6">
-                <input type="hidden" name="itemId" value="2">
-                <input type ="hidden" name = "productName" value = "Phone">
-                <input type ="hidden" name = "price" value = 700>
-
-                <button type="submit" class="w-full px-6 py-3 bg-green-600 text-white rounded-full shadow-lg text-lg font-semibold hover:bg-green-700 transition-all">Add to Cart</button>
-
-            </form>
-        </div>
-
+<!-- 3D animation container, visible at start -->
+<div class="after-loading-3d">
+    <div class="cube-3d">
+        <div class="face front"></div>
+        <div class="face back"></div>
+        <div class="face right"></div>
+        <div class="face left"></div>
+        <div class="face top"></div>
+        <div class="face bottom"></div>
     </div>
 </div>
 
-<footer class="bg-green-900 text-white text-center py-6 mt-12">
-    <p class="text-lg">&copy; 2025 ShopCart. All Rights Reserved.</p>
+<header>
+    <nav>
+        <div class="logo">
+            <span>LUMINEUX</span>
+        </div>
+        <div class="menu-wrapper">
+            <ul class="menu">
+                <li><a href="#" class="nav-link">New Arrivals</a></li>
+                <li><a href="#" class="nav-link">Collections</a></li>
+                <li><a href="#" class="nav-link">Bestsellers</a></li>
+                <li><a href="#" class="nav-link">Lifestyle</a></li>
+            </ul>
+        </div>
+        <div class="nav-actions">
+            <div class="search">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="account dropdown">
+                <i class="fas fa-user"></i>
+                <div class="dropdown-menu">
+                    <a href="#" class="dropdown-item">Login</a>
+                    <a href="#" class="dropdown-item">Register</a>
+                    <a href="#" class="dropdown-item">Profile</a>
+                </div>
+            </div>
+            <div class="cart">
+                <i class="fas fa-shopping-bag"></i>
+                <span class="cart-count">0</span>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Elevate Your <span>Experience</span></h1>
+            <p class="hero-subtitle">Curated luxury for the discerning individual</p>
+            <div class="cta-container">
+                <a href="#" class="cta-primary">Shop Collection</a>
+                <a href="#" class="cta-secondary">Discover More</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="/api/placeholder/600/800" alt="Premium product showcase">
+            <div class="hero-badge">
+                <span>Exclusive</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="featured-categories">
+        <div class="section-heading">
+            <h2>Curated Collections</h2>
+            <p>Handpicked by our expert stylists</p>
+        </div>
+
+        <div class="category-grid">
+            <div class="category-item">
+                <div class="category-image">
+                    <img src="/api/placeholder/400/500" alt="Fashion category">
+                </div>
+                <div class="category-overlay">
+                    <h3>Fashion</h3>
+                    <a href="#" class="category-link">Explore</a>
+                </div>
+            </div>
+            <div class="category-item">
+                <div class="category-image">
+                    <img src="/api/placeholder/400/500" alt="Home decor category">
+                </div>
+                <div class="category-overlay">
+                    <h3>Home</h3>
+                    <a href="#" class="category-link">Explore</a>
+                </div>
+            </div>
+            <div class="category-item">
+                <div class="category-image">
+                    <img src="/api/placeholder/400/500" alt="Accessories category">
+                </div>
+                <div class="category-overlay">
+                    <h3>Accessories</h3>
+                    <a href="#" class="category-link">Explore</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="trending-products">
+        <div class="section-heading">
+            <h2>Trending Now</h2>
+            <p>Limited availability for exceptional items</p>
+        </div>
+        <div class="product-showcase">
+
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="section-heading">
+            <h2>Trusted by Thousands</h2>
+            <p>What our community is saying</p>
+        </div>
+        <div class="testimonial-slider">
+            <div class="testimonial-item">
+                <div class="testimonial-content">
+                    <p>"The quality of their products is unmatched. Every purchase feels like an investment in luxury."</p>
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-image">
+                        <img src="/api/placeholder/60/60" alt="Customer photo">
+                    </div>
+                    <div class="author-info">
+                        <h4>Emily Thompson</h4>
+                        <p>Verified Customer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="newsletter">
+        <div class="newsletter-content">
+            <h2>Join Our Exclusive Circle</h2>
+            <p>Be the first to receive special offers, early access to new collections, and personalized recommendations.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Your email address" required>
+                <button type="submit">Subscribe</button>
+            </form>
+            <div class="social-proof">
+                <p>Join over 50,000 satisfied customers</p>
+                <div class="social-icons">
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-pinterest"></i>
+                    <i class="fab fa-facebook"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-column brand">
+            <h3>LUMINEUX</h3>
+            <p>Elevating everyday experiences through thoughtfully designed premium products.</p>
+            <div class="payment-methods">
+                <i class="fab fa-cc-visa"></i>
+                <i class="fab fa-cc-mastercard"></i>
+                <i class="fab fa-cc-amex"></i>
+                <i class="fab fa-cc-paypal"></i>
+            </div>
+        </div>
+        <div class="footer-column">
+            <h4>Shop</h4>
+            <ul>
+                <li><a href="#">New Arrivals</a></li>
+                <li><a href="#">Bestsellers</a></li>
+                <li><a href="#">Collections</a></li>
+                <li><a href="#">Sale</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h4>Support</h4>
+            <ul>
+                <li><a href="#">Contact Us</a></li>
+                <li><a href="#">Shipping & Returns</a></li>
+                <li><a href="#">Care Guide</a></li>
+                <li><a href="#">FAQ</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h4>Company</h4>
+            <ul>
+                <li><a href="#">Our Story</a></li>
+                <li><a href="#">Sustainability</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Press</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 Lumineux. All rights reserved.</p>
+        <div class="legal-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+        </div>
+    </div>
 </footer>
 
 <script>
+    // Simple loading screen animation
+    window.addEventListener('load', function() {
+        // Show 3D animation cube at start
+        const cubeDiv = document.querySelector('.after-loading-3d');
+        if (cubeDiv) {
+            cubeDiv.style.display = 'flex';
+            setTimeout(() => {
+                cubeDiv.style.display = 'none';
+            }, 1800); // Show cube for 1.8s, then hide
+        }
+
+        setTimeout(() => {
+            document.querySelector('.loading-screen').style.opacity = 0;
+            setTimeout(() => {
+                document.querySelector('.loading-screen').style.display = 'none';
+            }, 500);
+        }, 750);
+
+        // Initialize animations
+        gsap.from('.hero-title', {opacity: 0, y: 30, duration: 1, delay: 1.8});
+        gsap.from('.hero-subtitle', {opacity: 0, y: 20, duration: 1, delay: 2});
+        gsap.from('.cta-container', {opacity: 0, y: 20, duration: 1, delay: 2.2});
+        gsap.from('.hero-image', {opacity: 0, scale: 0.95, duration: 1.2, delay: 1.8});
+
+        // Social proof counter animation
+        let count = 0;
+        const counter = setInterval(() => {
+            count += 1000;
+            if (count <= 50000) {
+                document.querySelector('.social-proof p').innerText = `Join over ${count.toLocaleString()} satisfied customers`;
+            } else {
+                clearInterval(counter);
+            }
+        }, 50);
+    });
+    document.querySelectorAll('.tilt-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const angleX = (y - centerY) / 15;
+            const angleY = (centerX - x) / 15;
+
+            card.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'rotateX(0) rotateY(0)';
+        });
+    });
+
     document.addEventListener("DOMContentLoaded", function () {
         const forms = document.querySelectorAll("form");
 
@@ -137,7 +380,87 @@
             });
         });
     });
+    document.addEventListener("DOMContentLoaded", function () {
+        const forms = document.querySelectorAll("form");
+
+        forms.forEach(form => {
+            form.addEventListener("submit", async function (e) {
+                e.preventDefault();
+
+                const token = localStorage.getItem("jwtToken");
+                if (!token) {
+                    window.location.href = "/auth/login";
+                    return;
+                }
+
+                try {
+                    const response = await fetch("/auth/validate", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        form.submit(); // Token is valid
+                    } else {
+                        window.location.href = "/auth/login"; // Invalid/expired token
+                    }
+                } catch (err) {
+                    console.error("Token validation error:", err);
+                    window.location.href = "/auth/login";
+                }
+            });
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const newProduct = localStorage.getItem("newProduct");
+        if (newProduct) {
+            console.log(newProduct)
+            const product = JSON.parse(newProduct);
+            addProductToShowcase(product);
+            sessionStorage.removeItem("newProduct");
+        }
+    });
+    function addProductToShowcase(product) {
+        console.log(product.id);
+        const form = document.createElement('form');
+        form.className = 'product-card';
+        form.method = 'POST';
+        form.action = '/cart';
+
+        form.innerHTML = `
+        <div class="product-badge">New</div>
+        <div class="product-image">
+            <img src="/images/${product.image}" alt="Product image">
+        </div>
+        <div class="product-details">
+            <h3>${product.name}</h3>
+            <div class="product-meta">
+                <div class="price">$${product.price}</div>
+                <div class="ratings">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    <span>(24)</span>
+                </div>
+            </div>
+            <input type="hidden" name="itemId" value="${product.id}">
+            <input type="hidden" name="product_name" value="${product.name}">
+            <input type="hidden" name="price" value="${product.price}">
+            <button type="submit" class="add-to-cart">Add to Cart</button>
+        </div>
+    `;
+        document.querySelector('.product-showcase').appendChild(form);
+    }
+
 </script>
 
-</body>
+
+
+    </body>
 </html>

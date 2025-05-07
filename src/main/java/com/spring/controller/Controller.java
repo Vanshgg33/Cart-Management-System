@@ -1,12 +1,10 @@
 package com.spring.controller;
 
 import com.spring.jwt.Jwt_Util;
-import com.spring.model.Cart;
-import com.spring.model.CartItem;
-import com.spring.model.Item;
-import com.spring.model.User;
+import com.spring.model.*;
 import com.spring.repo.CartRepository;
 import com.spring.repo.ItemReposiotry;
+import com.spring.repo.ProductRepository;
 import com.spring.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +28,8 @@ public class Controller {
     private Jwt_Util jwt_Util;
     @Autowired
     private ItemReposiotry itemReposiotry;
+    @Autowired
+    private ProductRepository productRepository;
 
 
     @GetMapping("/")
@@ -38,7 +38,7 @@ public class Controller {
     }
 
 
-    @GetMapping("/cart")
+    @PostMapping("/cart")
     public ModelAndView add(@RequestParam("itemId") long itemid, @CookieValue(value = "jwtToken", required = false) String token) {
         Item item = itemReposiotry.getById(itemid);
         System.out.println(itemid);
@@ -50,17 +50,24 @@ public class Controller {
             newCart.setUser(user);
             return cartRepository.save(newCart);
         });
-        boolean alreadyAdded = cart.getItemList().stream()
-                .anyMatch(cartItem -> cartItem.getItem().getPrdouct_id() == itemid);
+//        boolean alreadyAdded = cart.getItemList().stream()
+//                .anyMatch(cartItem -> cartItem.getItem().getPrdouct_id() == itemid);
+        Product_Detail productDetail = new Product_Detail();
+        productDetail = productRepository.findById(itemid).get();
+        int q = productDetail.getProd_quantity();
+        q = q-1;
+        productRepository.updateProductQuantityById(itemid,q);
 
-        if (!alreadyAdded) {
+     //   if (!alreadyAdded) {
             CartItem newItem = new CartItem(); // Assuming a CartItem model for many-to-many relation
             newItem.setItem(item);
             newItem.setCart(cart);
             cart.getItemList().add(newItem);
             System.out.println(newItem.getItem().getPrdouct_id());
             cartRepository.save(cart);
-        }
+      //  }
+
+
 
         ModelAndView mv = new ModelAndView("shopcart");
 
