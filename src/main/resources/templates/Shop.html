@@ -415,17 +415,35 @@
         });
     });
 
-    document.addEventListener("DOMContentLoaded", () => {
-        const newProduct = localStorage.getItem("newProduct");
-        if (newProduct) {
-            console.log(newProduct)
-            const product = JSON.parse(newProduct);
-            addProductToShowcase(product);
-            sessionStorage.removeItem("newProduct");
+    document.addEventListener("DOMContentLoaded", async () => {
+        console.log("in 1");
+        const showcase = document.querySelector('.product-showcase');
+        const renderedProductIds = new Set(); // keeps track of added products
+
+        try {
+            const res = await fetch('/products');
+            const products = await res.json();
+
+            products.forEach(product => {
+                // Only add the product if it's not already added
+                if (!renderedProductIds.has(product.prod_id)) {
+                    addProductToShowcase({
+                        id: product.prod_id,
+                        name: product.prod_name,
+                        price: product.prod_price,
+                        image: product.prod_image
+                    }, showcase);
+
+                    renderedProductIds.add(product.prod_id);
+                }
+            });
+        } catch (error) {
+            console.error("Failed to load products:", error);
         }
     });
-    function addProductToShowcase(product) {
-        console.log(product.id);
+
+    function addProductToShowcase(product, container) {
+        console.log("i am here");
         const form = document.createElement('form');
         form.className = 'product-card';
         form.method = 'POST';
@@ -455,7 +473,8 @@
             <button type="submit" class="add-to-cart">Add to Cart</button>
         </div>
     `;
-        document.querySelector('.product-showcase').appendChild(form);
+
+        container.appendChild(form);
     }
 
 </script>

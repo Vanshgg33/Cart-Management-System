@@ -16,6 +16,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
@@ -53,9 +54,9 @@ public class Config {
                 .authorizeHttpRequests(auth -> auth
 
 
-                        .requestMatchers("/", "/http://localhost:8081/login/oauth2/code/google", "/cart", "/register","/save","/auth/login","/userCart","/AdminProduct","/admin_add").permitAll()
+                        .requestMatchers("/", "/http://localhost:8081/login/oauth2/code/google", "/cart", "/register","/save","/auth/login","/userCart","/AdminProduct","/admin_add","/products").permitAll()
 
-                                .requestMatchers("/checkout","/auth/validate","/style.css").permitAll()
+                                .requestMatchers("/checkout","/auth/validate").permitAll()
                                 .requestMatchers("/favicon.ico").permitAll()
 
 

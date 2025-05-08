@@ -24,10 +24,11 @@
             method: 'POST',
             body: formData
         });
-
-        const data = await response.json();
-        localStorage.setItem("newProduct", JSON.stringify(data));
-        window.location.href = "/";
+        if (response.ok) {
+            window.location.href = "/";
+        } else {
+            console.error("Product creation failed.");
+        }
     });
 </script>
 </html>

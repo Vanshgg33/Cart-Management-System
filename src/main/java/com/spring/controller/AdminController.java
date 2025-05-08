@@ -25,10 +25,7 @@ import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 
 @Controller
@@ -86,6 +83,11 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/products")
+    @ResponseBody
+    public List<Product_Detail> getAllProducts() {
+        return productRepository.findAll();
+    }
 
 }
 
