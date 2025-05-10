@@ -355,6 +355,7 @@
 
                 const token = localStorage.getItem("jwtToken");
                 if (!token) {
+                    alert("You need to login first.");
                     window.location.href = "/auth/login";
                     return;
                 }
@@ -380,40 +381,7 @@
             });
         });
     });
-    document.addEventListener("DOMContentLoaded", function () {
-        const forms = document.querySelectorAll("form");
 
-        forms.forEach(form => {
-            form.addEventListener("submit", async function (e) {
-                e.preventDefault();
-
-                const token = localStorage.getItem("jwtToken");
-                if (!token) {
-                    window.location.href = "/auth/login";
-                    return;
-                }
-
-                try {
-                    const response = await fetch("/auth/validate", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${token}`
-                        }
-                    });
-
-                    if (response.ok) {
-                        form.submit(); // Token is valid
-                    } else {
-                        window.location.href = "/auth/login"; // Invalid/expired token
-                    }
-                } catch (err) {
-                    console.error("Token validation error:", err);
-                    window.location.href = "/auth/login";
-                }
-            });
-        });
-    });
 
     document.addEventListener("DOMContentLoaded", async () => {
         console.log("in 1");

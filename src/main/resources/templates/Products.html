@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Products Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+<div class="p-8 max-w-7xl mx-auto">
+    <h1 class="text-3xl font-bold text-indigo-700 mb-6">🛍️ Manage Products</h1>
+
+    <!-- Products Table -->
+    <div class="bg-white rounded-lg shadow p-6 mb-10">
+        <h2 class="text-xl font-semibold mb-4 text-indigo-600">📦 Product List</h2>
+        <table class="min-w-full table-auto border">
+            <thead class="bg-indigo-600 text-white">
+            <tr>
+                <th class="px-4 py-2">Image</th>
+                <th class="px-4 py-2">Name</th>
+                <th class="px-4 py-2">Price</th>
+                <th class="px-4 py-2">Description</th>
+                <th class="px-4 py-2">Quantity</th>
+                <th class="px-4 py-2">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${products}" class="border-b hover:bg-gray-50">
+                <td class="px-4 py-2">
+                    <img th:src="@{${product.prod_image}}" class="h-16 w-16 rounded" alt="Product Image" /></td>
+                </td>
+                <td th:text="${product.prod_name}"></td>
+                <td th:text="'₹' + ${product.prod_price}"></td>
+                <td th:text="${product.prod_description}"></td>
+                <td th:text="${product.prod_quantity}"></td>
+                <td class="px-4 py-2">
+                    <form action="/deleteproduct" method="post">
+                        <input type="hidden" name="name" th:value="${product.prod_name}" />
+                        <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Add Product Form -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-xl font-semibold mb-4 text-indigo-600">➕ Add New Product</h2>
+        <form th:action="@{/admin_add}" method="post" enctype="multipart/form-data" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium mb-1 text-indigo-700">Product Name</label>
+                    <input type="text" name="name" required class="w-full border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1 text-indigo-700">Price (₹)</label>
+                    <input type="number" name="price" required step="0.01" class="w-full border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                </div>
+                <div class="col-span-2">
+                    <label class="block text-sm font-medium mb-1 text-indigo-700">Description</label>
+                    <textarea name="description"  required rows="3" class="w-full border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1 text-indigo-700">Quantity</label>
+                    <input type="number" name="quantity" required class="w-full border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1 text-indigo-700">Product Image</label>
+                    <input type="file" name="image"accept="image/*" required class="w-full border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                </div>
+            </div>
+            <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded shadow hover:bg-indigo-700 transition">Add Product</button>
+        </form>
+    </div>
+</div>
+
+</body>
+<script>
+    document.querySelector('#form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+
+        const response = await fetch('/admin_add', {
+            method: 'POST',
+            body: formData
+        });
+        if (response.ok) {
+            window.location.href = "/";
+        } else {
+            console.error("Product creation failed.");
+        }
+    });
+</script>
+</html>

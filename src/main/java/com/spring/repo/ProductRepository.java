@@ -13,6 +13,13 @@ public interface ProductRepository extends JpaRepository<Product_Detail, Long> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE Product_Detail p SET p.prod_quantity = :quantity WHERE p.id = :id")
+    @Query("UPDATE Product_Detail p SET p.prod_quantity = :quantity WHERE p.prod_id = :id")
     void updateProductQuantityById(@Param("id") Long id, @Param("quantity") int quantity);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Product_Detail p WHERE p.prod_name = :name")
+    void deleteByProdName(@Param("name") String name);
+
+
 }

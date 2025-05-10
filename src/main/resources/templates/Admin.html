@@ -1,34 +1,160 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <title>Admin</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        [data-theme="dark"] {
+            --tw-bg-opacity: 1;
+            background-color: rgb(17 24 39 / var(--tw-bg-opacity));
+            color: white;
+        }
+        [data-theme="dark"] .text-gray-800 { color: white; }
+        [data-theme="dark"] .bg-white { background-color: #1f2937 !important; }
+        [data-theme="dark"] .text-indigo-700 { color: #c7d2fe; }
+        [data-theme="dark"] .border-gray-300 { border-color: #374151; }
+        [data-theme="dark"] .text-indigo-800 { color: #c7d2fe; }
+        [data-theme="dark"] input { background-color: #374151; color: white; }
+        [data-theme="dark"] .hover\:bg-indigo-50:hover { background-color: #374151; }
+    </style>
 </head>
-<body>
-<form action="/admin_add" method="post" enctype="multipart/form-data" id ="form">
-    <input type="text" name="name" placeholder="Product Name" required /><br />
-    <textarea name="description" placeholder="Description" required></textarea><br />
-    <input type="number" name="price" step="0.01" placeholder="Price" required /><br />
-    <input type="number" name="quantity" placeholder="Quantity" required /><br />
-    <input type="file" name="image" accept="image/*" required /><br />
-    <button type="submit">Add Product</button>
-</form>
-</body>
+<body class="font-sans">
+
+<!-- Sidebar + Main Layout -->
+<div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-indigo-700 text-white shadow-lg">
+        <div class="p-6 text-2xl font-bold border-b border-indigo-500">Admin Panel</div>
+        <nav class="mt-6 space-y-2">
+            <a href="#" class="block px-6 py-3 hover:bg-indigo-600 transition">📊 Dashboard</a>
+            <a href="#" class="block px-6 py-3 hover:bg-indigo-600 transition">📦 Orders</a>
+            <a href="/viewproducts" class="block px-6 py-3 hover:bg-indigo-600 transition">🛍️ Products</a>
+            <a href="#" class="block px-6 py-3 hover:bg-indigo-600 transition">👥 Customers</a>
+            <a href="#" class="block px-6 py-3 hover:bg-indigo-600 transition">📈 Analytics</a>
+            <a href="#" class="block px-6 py-3 hover:bg-indigo-600 transition">⚙️ Settings</a>
+        </nav>
+    </aside>
+
+    <!-- Main -->
+    <div class="flex-1">
+        <!-- Header -->
+        <header class="bg-indigo-600 text-white shadow p-4 flex justify-between items-center">
+            <input type="text" placeholder="Search..." class="px-4 py-2 rounded w-1/3 text-gray-800" />
+            <div class="flex items-center space-x-4">
+                <button id="darkToggle" class="bg-white text-indigo-600 px-3 py-1 rounded hover:bg-indigo-100">🌗 Toggle Mode</button>
+                <img src="https://i.pravatar.cc/40" class="w-10 h-10 rounded-full border-2 border-white" alt="Admin profile">
+            </div>
+        </header>
+
+        <!-- Content -->
+        <main class="p-6 space-y-6">
+            <!-- Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-gradient-to-r from-indigo-500 to-indigo-700 text-white p-4 rounded-lg shadow">
+                    <h2 class="text-sm">Total Sales</h2>
+                    <p class="text-3xl font-bold">$24,500</p>
+                </div>
+                <div class="bg-gradient-to-r from-green-400 to-green-600 text-white p-4 rounded-lg shadow">
+                    <h2 class="text-sm">Orders</h2>
+                    <p class="text-3xl font-bold">1,245</p>
+                </div>
+                <div class="bg-gradient-to-r from-blue-400 to-blue-600 text-white p-4 rounded-lg shadow">
+                    <h2 class="text-sm">Users</h2>
+                    <p class="text-3xl font-bold">5,620</p>
+                </div>
+                <div class="bg-gradient-to-r from-pink-400 to-pink-600 text-white p-4 rounded-lg shadow">
+                    <h2 class="text-sm">Products</h2>
+                    <p class="text-3xl font-bold">320</p>
+                </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-bold mb-4 text-indigo-700">📈 Sales Overview</h2>
+                <canvas id="salesChart" height="100"></canvas>
+            </div>
+
+            <!-- Table -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-bold mb-4 text-indigo-700">🧾 Recent Orders</h2>
+                <table class="w-full border-collapse text-sm">
+                    <thead>
+                    <tr class="text-left border-b border-gray-300 text-indigo-800">
+                        <th class="py-2">Order ID</th>
+                        <th class="py-2">Customer</th>
+                        <th class="py-2">Date</th>
+                        <th class="py-2">Amount</th>
+                        <th class="py-2">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="hover:bg-indigo-50 border-b">
+                        <td class="py-3">#1001</td>
+                        <td class="py-3">Jane Doe</td>
+                        <td class="py-3">10 May 2025</td>
+                        <td class="py-3">$250.00</td>
+                        <td class="py-3"><span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">Completed</span></td>
+                    </tr>
+                    <tr class="hover:bg-indigo-50 border-b">
+                        <td class="py-3">#1002</td>
+                        <td class="py-3">John Smith</td>
+                        <td class="py-3">09 May 2025</td>
+                        <td class="py-3">$170.00</td>
+                        <td class="py-3"><span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-xs">Pending</span></td>
+                    </tr>
+                    <tr class="hover:bg-indigo-50 border-b">
+                        <td class="py-3">#1003</td>
+                        <td class="py-3">Alex Johnson</td>
+                        <td class="py-3">08 May 2025</td>
+                        <td class="py-3">$99.99</td>
+                        <td class="py-3"><span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs">Cancelled</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- JavaScript: Dark Mode + Chart -->
 <script>
-    document.querySelector('#form').addEventListener('submit', async function(e) {
-        e.preventDefault();
+    // Dark Mode Toggle
+    document.getElementById('darkToggle').addEventListener('click', () => {
+        const html = document.documentElement;
+        html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
+    });
 
-        const formData = new FormData(this);
-
-        const response = await fetch('/admin_add', {
-            method: 'POST',
-            body: formData
-        });
-        if (response.ok) {
-            window.location.href = "/";
-        } else {
-            console.error("Product creation failed.");
+    // Chart.js
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+            datasets: [{
+                label: 'Sales ($)',
+                data: [12000, 15000, 10000, 17000, 24000],
+                backgroundColor: 'rgba(99, 102, 241, 0.2)',
+                borderColor: 'rgba(99, 102, 241, 1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.3,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: true } },
+            scales: {
+                y: { beginAtZero: true }
+            }
         }
     });
 </script>
+</body>
+
+
+
+
 </html>

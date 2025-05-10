@@ -34,14 +34,13 @@ public class AdminController {
     private ProductRepository productRepository;
     @Autowired
     private ItemReposiotry itemRepository;
+    @Value("${upload.dir}")
+    private String uploadDir;
 
     @GetMapping("/AdminProduct")
     public String page() {
         return "Admin";
     }
-
-    @Value("${upload.dir}")
-    private String uploadDir;
 
     @PostMapping("/admin_add")
     @ResponseBody
@@ -51,10 +50,10 @@ public class AdminController {
                                                           @RequestParam("quantity") int quantity,
                                                           @RequestParam("image") MultipartFile imageFile) {
         try {
-            String fileName = UUID.randomUUID().toString() + "_" + imageFile.getOriginalFilename();
+            String fileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
             Path imagePath = Paths.get(uploadDir, fileName);
             Files.copy(imageFile.getInputStream(), imagePath);
-
+           ModelAndView modelAndView = new ModelAndView();
             Product_Detail product = new Product_Detail();
             product.setProd_name(name);
             product.setProd_description(description);
@@ -75,7 +74,7 @@ public class AdminController {
             responseBody.put("price", price);
             responseBody.put("quantity", quantity);
             responseBody.put("image", fileName);
-
+            modelAndView.setViewName("redirect:/viewproducts");
             return ResponseEntity.ok(responseBody);
         } catch (Exception e) {
             e.printStackTrace();

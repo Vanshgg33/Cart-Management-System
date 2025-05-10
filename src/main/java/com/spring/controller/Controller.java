@@ -40,7 +40,7 @@ public class Controller {
 
     @PostMapping("/cart")
     public ModelAndView add(@RequestParam("itemId") long itemid, @CookieValue(value = "jwtToken", required = false) String token) {
-        Item item = itemReposiotry.getById(itemid);
+        Item item = itemReposiotry.getReferenceById(itemid);
         System.out.println(itemid);
         String username = jwt_Util.extractUsername(token);
         User user = userRepository.findByUsername(username);
