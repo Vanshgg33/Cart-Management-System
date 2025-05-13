@@ -39,7 +39,7 @@ public class AdminController2 {
     @PostMapping("/deleteproduct")
     public ModelAndView deleteProduct(@RequestParam("name")String name) {
         productRepository.deleteByProdName(name);
-        Item item = itemReposiotry.findByProductName(name);
+
        itemReposiotry.deleteByProductName(name);
 
         ModelAndView modelAndView = new ModelAndView();
@@ -48,5 +48,5 @@ public class AdminController2 {
 
     }
 
-    
+
 }

@@ -29,7 +29,7 @@ import com.spring.model.Item;
 
 
 @Controller
-@RequestMapping("/checkout")
+@RequestMapping("/QR")
 public class QRController {
 
     @Autowired

@@ -1,0 +1,320 @@
+/* Login Page Styles */
+.login-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8f5f2 60%, #ece6e0 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    width: 100%;
+    /* Full width for the login page */
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 100%;
+    background: #fff;
+    border-radius: 0;
+    box-shadow: none;
+    margin: 0;
+    padding: 4vw 0;
+    border: none;
+}
+
+@media (max-width: 900px) {
+    .login-container {
+        grid-template-columns: 1fr;
+    }
+
+    .login-image {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .login-container {
+        padding: 2rem 0.5rem;
+        max-width: 100vw;
+    }
+}
+
+.login-image,
+.login-image img,
+.login-image .image-overlay {
+    display: none !important;
+}
+
+.login-form-wrapper {
+    padding: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.login-form {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    background: linear-gradient(135deg, #fff 80%, #f8f5f2 100%);
+    border-radius: 22px;
+    border: 1.5px solid #ece6e0;
+    box-shadow: 0 8px 32px rgba(12,27,51,0.10), 0 2px 12px rgba(200,153,107,0.10);
+    padding: 3.5rem 2.5rem 2.5rem 2.5rem;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-form:hover {
+    box-shadow: 0 12px 40px rgba(12,27,51,0.13), 0 4px 18px rgba(200,153,107,0.13);
+    border-color: #e3d3c0;
+}
+
+@media (max-width: 600px) {
+    .login-form {
+        border-radius: 0;
+        box-shadow: none;
+        padding: 2rem 0.5rem;
+        max-width: 100%;
+    }
+}
+
+.login-form h1 {
+    font-size: 2.5rem;
+    color: var(--color-primary, #0c1b33);
+    margin-bottom: 0.7rem;
+    text-align: center;
+    font-weight: 800;
+    letter-spacing: 1px;
+    background: linear-gradient(90deg, #c8996b 10%, #0c1b33 90%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.form-subtitle {
+    text-align: center;
+    color: var(--color-text-secondary, #666);
+    margin-bottom: 2.2rem;
+    font-size: 1.15rem;
+    font-weight: 400;
+}
+
+.form-group {
+    margin-bottom: 1.7rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.form-group label {
+    font-size: 1.1rem;
+    color: var(--color-primary, #0c1b33);
+    margin-bottom: 0.2rem;
+    font-weight: 500;
+    text-align: left;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 1.1rem 2.5rem 1.1rem 2.8rem;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    background: #fff;
+    color: #222;
+    transition: border-color 0.2s;
+    text-align: left;
+}
+
+.form-group input:focus {
+    border-color: var(--color-secondary, #c8996b);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(200,153,107,0.08);
+}
+
+.icon-input {
+    position: absolute;
+    left: 1rem;
+    top: 65%;
+    transform: translateY(-50%);
+    color: var(--color-primary, #0c1b33);
+    font-size: 1.2rem;
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 1rem;
+    top: 65%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--color-primary, #0c1b33);
+    font-size: 1.2rem;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 1.7rem;
+    font-size: 1rem;
+    gap: 1.5rem;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+}
+
+.remember-me input {
+    margin-right: 0.8rem;
+}
+
+.remember-me label {
+    font-size: 1rem;
+    color: var(--color-primary, #0c1b33);
+    font-weight: 400;
+    margin-bottom: 0;
+}
+
+.forgot-password {
+    color: var(--color-secondary, #c8996b);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.2s;
+    margin-left: auto;
+}
+
+.forgot-password:hover {
+    color: #a97a4a;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 1.1rem;
+    background: var(--color-secondary, #c8996b);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    transition: background 0.2s;
+    box-shadow: 0 2px 8px rgba(200,153,107,0.08);
+    text-align: center;
+}
+
+.btn-login:hover {
+    background: #a97a4a;
+}
+
+.divider {
+    text-align: center;
+    margin: 2rem 0 1.5rem 0;
+    color: var(--color-text-secondary, #666);
+    font-size: 1rem;
+    position: relative;
+}
+
+.divider span {
+    background: #fff;
+    padding: 0 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    border-top: 1px solid #eee;
+    z-index: 0;
+}
+
+.social-login {
+    margin-bottom: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.7rem;
+}
+
+.btn-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 1.1rem;
+    background: #f8f5f2;
+    color: var(--color-primary, #0c1b33);
+    border: 1.5px solid #e5e5e5;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    font-weight: 500;
+    gap: 0.7rem;
+    box-shadow: 0 2px 8px rgba(200,153,107,0.06);
+}
+
+.btn-google i {
+    margin-right: 0.7rem;
+    font-size: 1.3rem;
+}
+
+.btn-google:hover {
+    background: #ece6e0;
+    border-color: #c8996b;
+}
+
+.signup-link {
+    text-align: center;
+    font-size: 1rem;
+    color: var(--color-text-secondary, #666);
+    margin-top: 1.8rem;
+}
+
+/* Additional responsive adjustments */
+@media (max-width: 600px) {
+    .login-container {
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .login-form-wrapper {
+        padding: 2rem;
+    }
+
+    .login-form {
+        max-width: 100%;
+    }
+}
+
+/* Center the logo/name in the header */
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    margin: 0 auto;
+    text-align: center;
+}

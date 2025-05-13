@@ -36,7 +36,7 @@ public class Jwt_Filter extends OncePerRequestFilter {
 
         // Skip JWT validation for "/checkout" and other public paths
         if ("/".equals(path) || "/cart".equals(path) ||
-                "/styles.css".equals(path) ||  "/register".equals(path) || "/user".equals(path) || "http://localhost:8081/login/oauth2/code/google".equals(path)|| "/delete".equals(path) || "/save".equals(path) ||
+                "/styles.css".equals(path) ||  "/register".equals(path) || "/login.css".equals(path) || "/user".equals(path) || "http://localhost:8081/login/oauth2/code/google".equals(path)|| "/delete".equals(path) || "/save".equals(path) ||
                 "/auth/login".equals(path)){
             System.out.println("Skipping JWT validation for public path: " + path);
             filterChain.doFilter(request, response);

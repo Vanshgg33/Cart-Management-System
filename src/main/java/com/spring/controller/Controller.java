@@ -37,13 +37,18 @@ public class Controller {
         return "shop";
     }
 
+    @GetMapping("/re-to")
+    public String reTo() {
+        return "shop";
+    }
+
 
     @PostMapping("/cart")
     public ModelAndView add(@RequestParam("itemId") long itemid, @CookieValue(value = "jwtToken", required = false) String token) {
         Item item = itemReposiotry.getReferenceById(itemid);
         System.out.println(itemid);
         String username = jwt_Util.extractUsername(token);
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsernameOrEmailOrPhone(username);
         System.out.println(user.getUsername());
         Cart cart = cartRepository.findByUser(user).orElseGet(() -> {
             Cart newCart = new Cart();
@@ -69,7 +74,7 @@ public class Controller {
 
 
 
-        ModelAndView mv = new ModelAndView("shopcart");
+        ModelAndView mv = new ModelAndView("Shop");
 
         mv.addObject("items", cart.getItemList());
         // Show only this user’s cart items
@@ -107,12 +112,12 @@ public class Controller {
     @GetMapping("/userCart")
     public ModelAndView viewCart(@CookieValue(value = "jwtToken", required = false) String token) {
         String username = jwt_Util.extractUsername(token);
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsernameOrEmailOrPhone(username);
         System.out.println(user.getUsername());
         Cart cart = user.getCart();
         List<CartItem> items = cart.getItemList();
         System.out.println(items);
-        ModelAndView mv = new ModelAndView("Cart");
+        ModelAndView mv = new ModelAndView("checkout");
         mv.addObject("items", items);
         mv.addObject("name",username);// you will loop over this in HTML
         return mv;
@@ -124,6 +129,11 @@ public class Controller {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/shop");
         return mv;
+    }
+
+    @GetMapping("/checkout")
+    public String gotoCheckout() {
+        return "checkout";
     }
 
 }

@@ -1,87 +1,229 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Cart System</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Register | Lumineux</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/login.css" />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <style>
-        /* Page Background */
-        body {
-            margin: 0;
-            height: 100vh;
+        .icon-input {
+            top: 75%;
+            transform: translateY(-50%);
+            font-size: 1.3rem;
+            height: 1.3em;
+            line-height: 1.3em;
             display: flex;
-            justify-content: center;
             align-items: center;
-            background: #2a4f5e;
-            font-family: Arial, sans-serif;
         }
 
-        /* Glassmorphism Registration Box */
-        .register-box {
-            width: 380px;
-            padding: 25px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(12px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            text-align: center;
+        .form-group {
+            position: relative;
         }
 
-        /* Title */
-        .register-box h2 {
-            color: white;
-            margin-bottom: 20px;
+        .form-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin: 0 8px 0 0;
+            vertical-align: middle;
         }
 
-        /* Input Fields */
-        .input-field {
+        .terms-checkbox {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .terms-checkbox label,
+        .terms-checkbox .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 400;
             width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 5px;
-            outline: none;
-            background: rgba(255, 255, 255, 0.6);
-            font-size: 16px;
         }
 
-        /* Register Button */
-        .btn {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 5px;
-            background: #ff3b60;
-            color: white;
-            cursor: pointer;
-            transition: background 0.3s;
+        .terms-checkbox span {
+            line-height: 1.4;
+            display: inline-block;
         }
 
-        .btn:hover {
-            background: #ff1744;
+        .terms-checkbox a {
+            color: #c8996b;
+            text-decoration: none;
         }
 
-        /* Link to Login */
-        .login-link {
-            color: white;
-            display: block;
-            margin-top: 15px;
+        .terms-checkbox a:hover {
+            text-decoration: underline;
         }
 
+        .form-group input {
+            vertical-align: middle;
+        }
+
+        .login-form {
+            max-width: 700px;
+        }
     </style>
 </head>
 <body>
-
-<div class="register-box">
-    <h2>Register</h2>
-    <form th:action="save" method="get">
-<!--        <input type = "number" class = "input-field" name = "UserId" placeholder="Id" REQUIRED>-->
-        <input type="text" class="input-field" name="password" placeholder="Password" required>
-        <input type="text" class="input-field" name="username" placeholder="Username" required>
-        <button type="submit" class="btn">Register</button>
-    </form>
-    <a href="/login" class="login-link">Already have an account? Login</a>
+<div class="loading-screen">
+    <div class="loading-icon"></div>
+    <div class="loading-text">Preparing Your Experience</div>
 </div>
 
+<main class="login-page">
+    <div class="login-container">
+        <div class="login-form-wrapper">
+            <form class="login-form" id="registerForm" action="/save">
+                <a href="/re-to">
+                    <div class="logo">
+                        <span>LUMINEUX</span>
+                    </div>
+                </a>
+
+                <h1>Create Account</h1>
+                <p class="form-subtitle">Join Lumineux for premium experiences</p>
+
+                <!-- Full Name -->
+                <div class="form-group">
+                    <label for="fullname">Full Name</label>
+                    <input
+                            type="text"
+                            id="fullname"
+                            name="username"
+                            placeholder="Enter your full name"
+                            required
+                    />
+                    <i class="fas fa-user icon-input"></i>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            required
+                    />
+                    <i class="fas fa-envelope icon-input"></i>
+                </div>
+
+                <!-- Phone -->
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input
+                            type="tel"
+                            id="phone"
+                            name="phoneNumber"
+                            placeholder="Enter your phone number"
+                            required
+                    />
+                    <i class="fas fa-phone icon-input"></i>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Create a password"
+                            required
+                    />
+                    <i class="fas fa-lock icon-input"></i>
+                    <button type="button" class="toggle-password">
+                        <i class="fas fa-eye-slash"></i>
+                    </button>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input
+                            type="password"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            placeholder="Confirm your password"
+                            required
+                    />
+                    <i class="fas fa-lock icon-input"></i>
+                    <button type="button" class="toggle-password">
+                        <i class="fas fa-eye-slash"></i>
+                    </button>
+                </div>
+
+                <!-- Terms and Conditions -->
+                <div class="form-group terms-checkbox">
+                    <label>
+                        <input type="checkbox" id="terms" name="terms" required />
+                        <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-login">Create Account</button>
+
+                <div class="signup-link">
+                    Already have an account?
+                    <a href="/auth/login" class="register-link">Sign In</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<script>
+    // Page loading screen animation
+    window.addEventListener('load', function () {
+        setTimeout(function () {
+            const loadingScreen = document.querySelector('.loading-screen');
+            loadingScreen.style.opacity = '0';
+            setTimeout(() => loadingScreen.style.display = 'none', 500);
+        }, 1500);
+
+        // Password toggle
+        document.querySelectorAll('.toggle-password').forEach(button => {
+            button.addEventListener('click', function () {
+                const passwordField = this.previousElementSibling.previousElementSibling;
+                const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordField.setAttribute('type', type);
+
+                const icon = this.querySelector('i');
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+            });
+        });
+
+        // Password matching
+        const registerForm = document.getElementById('registerForm');
+        const passwordInput = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirmPassword');
+
+        registerForm.addEventListener('submit', function (e) {
+            if (passwordInput.value !== confirmPassword.value) {
+                e.preventDefault();
+                alert('Passwords do not match!');
+                confirmPassword.classList.add('error');
+            }
+        });
+
+        confirmPassword.addEventListener('input', function () {
+            if (passwordInput.value === this.value) {
+                this.classList.remove('error');
+                this.classList.add('valid');
+            } else {
+                this.classList.remove('valid');
+                this.classList.add('error');
+            }
+        });
+    });
+</script>
 </body>
 </html>

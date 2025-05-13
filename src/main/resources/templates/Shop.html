@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lumineux | Premium Lifestyle</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
     <style>
@@ -13,6 +13,7 @@
             position: relative;
             display: inline-block;
         }
+
         .nav-actions .dropdown-menu {
             display: none;
             position: absolute;
@@ -20,15 +21,17 @@
             right: 0;
             background: #fff;
             min-width: 140px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
             border-radius: 8px;
             z-index: 200;
             padding: 0.5rem 0;
         }
+
         .nav-actions .dropdown:hover .dropdown-menu,
         .nav-actions .dropdown:focus-within .dropdown-menu {
             display: block;
         }
+
         .nav-actions .dropdown-menu .dropdown-item {
             display: block;
             padding: 1rem 1.5rem;
@@ -40,45 +43,84 @@
             background: none;
             cursor: pointer;
         }
+
         .nav-actions .dropdown-menu .dropdown-item:hover {
             background: var(--color-gray-light);
             color: var(--color-secondary);
         }
+
         .after-loading-3d {
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-            background: rgba(12,27,51,0.85);
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(12, 27, 51, 0.85);
             z-index: 9998;
             animation: fadeIn3d 0.7s;
         }
+
         @keyframes fadeIn3d {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
+
         .cube-3d {
-            width: 100px; height: 100px;
+            width: 100px;
+            height: 100px;
             position: relative;
             transform-style: preserve-3d;
-            animation: spinCube 2.5s cubic-bezier(.68,-0.55,.27,1.55) infinite;
+            animation: spinCube 2.5s cubic-bezier(.68, -0.55, .27, 1.55) infinite;
         }
+
         .cube-3d .face {
             position: absolute;
-            width: 100px; height: 100px;
+            width: 100px;
+            height: 100px;
             background: linear-gradient(135deg, #c8996b 60%, #e8c39e 100%);
             opacity: 0.95;
             border: 2px solid #fff3;
             box-shadow: 0 8px 24px #0002;
         }
-        .cube-3d .front  { transform: rotateY(0deg) translateZ(50px);}
-        .cube-3d .back   { transform: rotateY(180deg) translateZ(50px);}
-        .cube-3d .right  { transform: rotateY(90deg) translateZ(50px);}
-        .cube-3d .left   { transform: rotateY(-90deg) translateZ(50px);}
-        .cube-3d .top    { transform: rotateX(90deg) translateZ(50px);}
-        .cube-3d .bottom { transform: rotateX(-90deg) translateZ(50px);}
+
+        .cube-3d .front {
+            transform: rotateY(0deg) translateZ(50px);
+        }
+
+        .cube-3d .back {
+            transform: rotateY(180deg) translateZ(50px);
+        }
+
+        .cube-3d .right {
+            transform: rotateY(90deg) translateZ(50px);
+        }
+
+        .cube-3d .left {
+            transform: rotateY(-90deg) translateZ(50px);
+        }
+
+        .cube-3d .top {
+            transform: rotateX(90deg) translateZ(50px);
+        }
+
+        .cube-3d .bottom {
+            transform: rotateX(-90deg) translateZ(50px);
+        }
+
         @keyframes spinCube {
-            0%   { transform: rotateX(0deg) rotateY(0deg);}
-            100% { transform: rotateX(360deg) rotateY(360deg);}
+            0% {
+                transform: rotateX(0deg) rotateY(0deg);
+            }
+            100% {
+                transform: rotateX(360deg) rotateY(360deg);
+            }
         }
     </style>
 </head>
@@ -120,14 +162,16 @@
             <div class="account dropdown">
                 <i class="fas fa-user"></i>
                 <div class="dropdown-menu">
-                    <a href="#" class="dropdown-item">Login</a>
-                    <a href="#" class="dropdown-item">Register</a>
+                    <a href="/auth/login" class="dropdown-item">Login</a>
+                    <a href="/register" class="dropdown-item">Register</a>
                     <a href="#" class="dropdown-item">Profile</a>
                 </div>
             </div>
             <div class="cart">
-                <i class="fas fa-shopping-bag"></i>
-                <span class="cart-count">0</span>
+                <a href="/userCart">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count">0</span>
+                </a>
             </div>
         </div>
     </nav>
@@ -144,7 +188,7 @@
             </div>
         </div>
         <div class="hero-image">
-            <img src="/api/placeholder/600/800" alt="Premium product showcase">
+            <img src="/images/product.png" alt="Premium product showcase">
             <div class="hero-badge">
                 <span>Exclusive</span>
             </div>
@@ -160,7 +204,7 @@
         <div class="category-grid">
             <div class="category-item">
                 <div class="category-image">
-                    <img src="/api/placeholder/400/500" alt="Fashion category">
+                    <img src="/images/Fashion.jpg" alt="Fashion category">
                 </div>
                 <div class="category-overlay">
                     <h3>Fashion</h3>
@@ -169,7 +213,7 @@
             </div>
             <div class="category-item">
                 <div class="category-image">
-                    <img src="/api/placeholder/400/500" alt="Home decor category">
+                    <img src="/images/home.jpg" alt="Home decor category">
                 </div>
                 <div class="category-overlay">
                     <h3>Home</h3>
@@ -178,7 +222,7 @@
             </div>
             <div class="category-item">
                 <div class="category-image">
-                    <img src="/api/placeholder/400/500" alt="Accessories category">
+                    <img src="/images/acc.jpg" alt="Accessories category">
                 </div>
                 <div class="category-overlay">
                     <h3>Accessories</h3>
@@ -206,11 +250,12 @@
         <div class="testimonial-slider">
             <div class="testimonial-item">
                 <div class="testimonial-content">
-                    <p>"The quality of their products is unmatched. Every purchase feels like an investment in luxury."</p>
+                    <p>"The quality of their products is unmatched. Every purchase feels like an investment in
+                        luxury."</p>
                 </div>
                 <div class="testimonial-author">
                     <div class="author-image">
-                        <img src="/api/placeholder/60/60" alt="Customer photo">
+                        <img src="#" alt="Customer photo">
                     </div>
                     <div class="author-info">
                         <h4>Emily Thompson</h4>
@@ -224,7 +269,8 @@
     <section class="newsletter">
         <div class="newsletter-content">
             <h2>Join Our Exclusive Circle</h2>
-            <p>Be the first to receive special offers, early access to new collections, and personalized recommendations.</p>
+            <p>Be the first to receive special offers, early access to new collections, and personalized
+                recommendations.</p>
             <form class="newsletter-form">
                 <input type="email" placeholder="Your email address" required>
                 <button type="submit">Subscribe</button>
@@ -292,7 +338,7 @@
 
 <script>
     // Simple loading screen animation
-    window.addEventListener('load', function() {
+    window.addEventListener('load', function () {
         // Show 3D animation cube at start
         const cubeDiv = document.querySelector('.after-loading-3d');
         if (cubeDiv) {
@@ -346,54 +392,21 @@
         });
     });
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const forms = document.querySelectorAll("form");
-
-        forms.forEach(form => {
-            form.addEventListener("submit", async function (e) {
-                e.preventDefault();
-
-                const token = localStorage.getItem("jwtToken");
-                if (!token) {
-                    alert("You need to login first.");
-                    window.location.href = "/auth/login";
-                    return;
-                }
-
-                try {
-                    const response = await fetch("/auth/validate", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${token}`
-                        }
-                    });
-
-                    if (response.ok) {
-                        form.submit(); // Token is valid
-                    } else {
-                        window.location.href = "/auth/login"; // Invalid/expired token
-                    }
-                } catch (err) {
-                    console.error("Token validation error:", err);
-                    window.location.href = "/auth/login";
-                }
-            });
-        });
-    });
-
-
     document.addEventListener("DOMContentLoaded", async () => {
         console.log("in 1");
         const showcase = document.querySelector('.product-showcase');
-        const renderedProductIds = new Set(); // keeps track of added products
+        const renderedProductIds = new Set();
+
+        if (!showcase) {
+            console.warn("Product showcase container not found.");
+            return;
+        }
 
         try {
             const res = await fetch('/products');
             const products = await res.json();
 
             products.forEach(product => {
-                // Only add the product if it's not already added
                 if (!renderedProductIds.has(product.prod_id)) {
                     addProductToShowcase({
                         id: product.prod_id,
@@ -445,9 +458,43 @@
         container.appendChild(form);
     }
 
+    document.addEventListener("submit", async function (e) {
+        const form = e.target;
+
+        // Only target the forms you added (with a specific class)
+        if (form.classList.contains("product-card")) {
+            e.preventDefault();
+
+            const token = localStorage.getItem("jwtToken");
+            if (!token) {
+                alert("You need to login first.");
+                window.location.href = "/auth/login";
+                return;
+            }
+
+            try {
+                console.log("token is sent");
+                const response = await fetch("/auth/validate", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    form.submit(); // Token is valid, allow the real submit
+                } else {
+                    window.location.href = "/auth/login"; // Invalid/expired token
+                }
+            } catch (err) {
+                console.error("Token validation error:", err);
+                window.location.href = "/auth/login";
+            }
+        }
+    });
 </script>
 
 
-
-    </body>
+</body>
 </html>

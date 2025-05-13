@@ -1,7 +1,7 @@
 package com.spring.controller;
 
 import com.spring.jwt.Jwt_Util;
-import com.spring.jwt.LoginRequest;
+import com.spring.model.LoginRequest;
 import com.spring.model.User;
 import com.spring.model.UserShow;
 import com.spring.repo.UserRepository;
@@ -37,12 +37,15 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        // Find user by username
-        User user = userRepository.findByUsername(request.getUsername());
-        if (user == null || !passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new BadCredentialsException("Invalid username or password");
-        }
+        String logininput = request.getLogininput();
 
+        String password = request.getPassword();
+        User user = userRepository.findByUsernameOrEmailOrPhone(logininput);
+        System.out.println(request);
+
+        if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
+            throw new BadCredentialsException("Invalid credentials");
+        }
 
         // Generate JWT token
         UserShow userDetails = new UserShow(user);
@@ -70,6 +73,7 @@ public class AuthController {
         try {
             boolean expired = jwtUtil.isTokenExpired(token);
             if (expired) {
+                System.out.println("Expired token");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token is expired");
             } else {
 
