@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lumineux | Premium Lifestyle</title>
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
     <style>
@@ -13,114 +13,98 @@
             position: relative;
             display: inline-block;
         }
-
         .nav-actions .dropdown-menu {
             display: none;
             position: absolute;
             top: 120%;
             right: 0;
-            background: #fff;
-            min-width: 140px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-            border-radius: 8px;
+            background: linear-gradient(135deg, #fff 80%, #f5e9db 100%);
+            min-width: 170px;
+            box-shadow: 0 8px 32px rgba(12,27,51,0.10), 0 2px 8px #c8996b22;
+            border-radius: 12px;
             z-index: 200;
             padding: 0.5rem 0;
+            border: 1.5px solid #e8c39e;
+            transition: box-shadow 0.2s;
+            font-family: var(--font-primary, 'Montserrat', sans-serif);
+            animation: fadeIn 0.25s;
         }
-
+        .nav-actions .dropdown.open .dropdown-menu,
         .nav-actions .dropdown:hover .dropdown-menu,
         .nav-actions .dropdown:focus-within .dropdown-menu {
             display: block;
         }
-
         .nav-actions .dropdown-menu .dropdown-item {
             display: block;
             padding: 1rem 1.5rem;
-            color: var(--color-primary);
-            font-size: 1.4rem;
+            color: #c8996b;
+            font-size: 1.1rem;
+            font-family: var(--font-primary, 'Montserrat', sans-serif);
             text-decoration: none;
-            transition: background 0.2s;
-            border: none;
             background: none;
+            border: none;
             cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.18s, color 0.18s;
+            text-align: left;
         }
-
         .nav-actions .dropdown-menu .dropdown-item:hover {
-            background: var(--color-gray-light);
-            color: var(--color-secondary);
+            background: #f5e9db;
+            color: #7a5c2e;
         }
-
+        .nav-actions .dropdown-menu .dropdown-item:active {
+            background: #e8c39e;
+            color: #232f3e;
+        }
+        /* Optional: Add a small arrow for dropdown */
+        .nav-actions .dropdown > .fa-user::after {
+            content: '';
+            display: inline-block;
+            margin-left: 7px;
+            vertical-align: middle;
+            border-top: 5px solid #c8996b;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
         .after-loading-3d {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: rgba(12, 27, 51, 0.85);
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            background: rgba(12,27,51,0.85);
             z-index: 9998;
             animation: fadeIn3d 0.7s;
         }
-
         @keyframes fadeIn3d {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-
         .cube-3d {
-            width: 100px;
-            height: 100px;
+            width: 100px; height: 100px;
             position: relative;
             transform-style: preserve-3d;
-            animation: spinCube 2.5s cubic-bezier(.68, -0.55, .27, 1.55) infinite;
+            animation: spinCube 2.5s cubic-bezier(.68,-0.55,.27,1.55) infinite;
         }
-
         .cube-3d .face {
             position: absolute;
-            width: 100px;
-            height: 100px;
+            width: 100px; height: 100px;
             background: linear-gradient(135deg, #c8996b 60%, #e8c39e 100%);
             opacity: 0.95;
             border: 2px solid #fff3;
             box-shadow: 0 8px 24px #0002;
         }
-
-        .cube-3d .front {
-            transform: rotateY(0deg) translateZ(50px);
-        }
-
-        .cube-3d .back {
-            transform: rotateY(180deg) translateZ(50px);
-        }
-
-        .cube-3d .right {
-            transform: rotateY(90deg) translateZ(50px);
-        }
-
-        .cube-3d .left {
-            transform: rotateY(-90deg) translateZ(50px);
-        }
-
-        .cube-3d .top {
-            transform: rotateX(90deg) translateZ(50px);
-        }
-
-        .cube-3d .bottom {
-            transform: rotateX(-90deg) translateZ(50px);
-        }
-
+        .cube-3d .front  { transform: rotateY(0deg) translateZ(50px);}
+        .cube-3d .back   { transform: rotateY(180deg) translateZ(50px);}
+        .cube-3d .right  { transform: rotateY(90deg) translateZ(50px);}
+        .cube-3d .left   { transform: rotateY(-90deg) translateZ(50px);}
+        .cube-3d .top    { transform: rotateX(90deg) translateZ(50px);}
+        .cube-3d .bottom { transform: rotateX(-90deg) translateZ(50px);}
         @keyframes spinCube {
-            0% {
-                transform: rotateX(0deg) rotateY(0deg);
-            }
-            100% {
-                transform: rotateX(360deg) rotateY(360deg);
-            }
+            0%   { transform: rotateX(0deg) rotateY(0deg);}
+            100% { transform: rotateX(360deg) rotateY(360deg);}
         }
     </style>
 </head>
@@ -159,7 +143,7 @@
             <div class="search">
                 <i class="fas fa-search"></i>
             </div>
-            <div class="account dropdown">
+            <div class="account dropdown" tabindex="0">
                 <i class="fas fa-user"></i>
                 <div class="dropdown-menu">
                     <a href="/auth/login" class="dropdown-item">Login</a>
@@ -168,7 +152,7 @@
                 </div>
             </div>
             <div class="cart">
-                <a href="/userCart">
+                <a href ="/userCart">
                     <i class="fas fa-shopping-bag"></i>
                     <span class="cart-count">0</span>
                 </a>
@@ -188,7 +172,7 @@
             </div>
         </div>
         <div class="hero-image">
-            <img src="/images/product.png" alt="Premium product showcase">
+            <img src="product.png" alt="Premium product showcase">
             <div class="hero-badge">
                 <span>Exclusive</span>
             </div>
@@ -204,7 +188,7 @@
         <div class="category-grid">
             <div class="category-item">
                 <div class="category-image">
-                    <img src="/images/Fashion.jpg" alt="Fashion category">
+                    <img src="Fashion.jpg" alt="Fashion category">
                 </div>
                 <div class="category-overlay">
                     <h3>Fashion</h3>
@@ -213,7 +197,7 @@
             </div>
             <div class="category-item">
                 <div class="category-image">
-                    <img src="/images/home.jpg" alt="Home decor category">
+                    <img src="home.jpg" alt="Home decor category">
                 </div>
                 <div class="category-overlay">
                     <h3>Home</h3>
@@ -222,7 +206,7 @@
             </div>
             <div class="category-item">
                 <div class="category-image">
-                    <img src="/images/acc.jpg" alt="Accessories category">
+                    <img src="acc.jpg" alt="Accessories category">
                 </div>
                 <div class="category-overlay">
                     <h3>Accessories</h3>
@@ -238,7 +222,103 @@
             <p>Limited availability for exceptional items</p>
         </div>
         <div class="product-showcase">
+            <form class="product-card" action="/cart" method="POST">
+                <div class="product-badge">New</div>
+                <div class="product-image">
+                    <img src="/api/placeholder/300/350" alt="Product image">
+                </div>
+                <div class="product-details">
+                    <h3>Signature Leather Bag</h3>
+                    <div class="product-meta">
+                        <div class="price">$329</div>
+                        <div class="ratings">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span>(24)</span>
+                        </div>
+                    </div>
+                    <input type="hidden" name="product" value="Signature Leather Bag">
+                    <input type="hidden" name="price" value="329">
+                    <button type="submit" class="add-to-cart">Add to Cart</button>
+                </div>
+            </form>
 
+            <form class="product-card" action="/cart" method="POST">
+                <div class="product-badge bestseller">Bestseller</div>
+                <div class="product-image">
+                    <img src="/api/placeholder/300/350" alt="Product image">
+                </div>
+                <div class="product-details">
+                    <h3>Cashmere Sweater</h3>
+                    <div class="product-meta">
+                        <div class="price">
+                            <span class="original">$259</span>
+                            $199
+                        </div>
+                        <div class="ratings">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <span>(42)</span>
+                        </div>
+                    </div>
+                    <input type="hidden" name="product" value="Cashmere Sweater">
+                    <input type="hidden" name="price" value="199">
+                    <button type="submit" class="add-to-cart">Add to Cart</button>
+                </div>
+            </form>
+
+            <form class="product-card" action="/cart" method="POST">
+                <div class="product-badge limited">Limited</div>
+                <div class="product-image">
+                    <img src="/api/placeholder/300/350" alt="Product image">
+                </div>
+                <div class="product-details">
+                    <h3>Minimalist Watch</h3>
+                    <div class="product-meta">
+                        <div class="price">$189</div>
+                        <div class="ratings">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <span>(37)</span>
+                        </div>
+                    </div>
+                    <input type="hidden" name="product" value="Minimalist Watch">
+                    <input type="hidden" name="price" value="189">
+                    <button type="submit" class="add-to-cart">Add to Cart</button>
+                </div>
+            </form>
+
+            <form class="product-card" action="/cart" method="POST">
+                <div class="product-image">
+                    <img src="/api/placeholder/300/350" alt="Product image">
+                </div>
+                <div class="product-details">
+                    <h3>Essential Perfume</h3>
+                    <div class="product-meta">
+                        <div class="price">$145</div>
+                        <div class="ratings">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span>(19)</span>
+                        </div>
+                    </div>
+                    <input type="hidden" name="product" value="Essential Perfume">
+                    <input type="hidden" name="price" value="145">
+                    <button type= "submit" class="add-to-cart">Add to Cart</button>
+                </div>
+            </form>
         </div>
     </section>
 
@@ -250,12 +330,11 @@
         <div class="testimonial-slider">
             <div class="testimonial-item">
                 <div class="testimonial-content">
-                    <p>"The quality of their products is unmatched. Every purchase feels like an investment in
-                        luxury."</p>
+                    <p>"The quality of their products is unmatched. Every purchase feels like an investment in luxury."</p>
                 </div>
                 <div class="testimonial-author">
                     <div class="author-image">
-                        <img src="#" alt="Customer photo">
+                        <img src="/api/placeholder/60/60" alt="Customer photo">
                     </div>
                     <div class="author-info">
                         <h4>Emily Thompson</h4>
@@ -269,8 +348,7 @@
     <section class="newsletter">
         <div class="newsletter-content">
             <h2>Join Our Exclusive Circle</h2>
-            <p>Be the first to receive special offers, early access to new collections, and personalized
-                recommendations.</p>
+            <p>Be the first to receive special offers, early access to new collections, and personalized recommendations.</p>
             <form class="newsletter-form">
                 <input type="email" placeholder="Your email address" required>
                 <button type="submit">Subscribe</button>
@@ -421,6 +499,39 @@
         } catch (error) {
             console.error("Failed to load products:", error);
         }
+    });
+    // Dropdown menu: show on hover/click, stay open when inside, close when mouse leaves dropdown area
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdown = document.querySelector('.nav-actions .dropdown');
+        const userIcon = dropdown.querySelector('.fa-user');
+        let dropdownOpen = false;
+        let closeTimeout = null;
+
+        // Toggle dropdown on click
+
+
+        // Show dropdown on mouseenter (icon or menu)
+        dropdown.addEventListener('mouseenter', function () {
+            clearTimeout(closeTimeout);
+            dropdown.classList.add('open');
+            dropdownOpen = true;
+        });
+
+        // Hide dropdown when mouse leaves the whole dropdown area (icon + menu)
+        dropdown.addEventListener('mouseleave', function () {
+            closeTimeout = setTimeout(() => {
+                dropdown.classList.remove('open');
+                dropdownOpen = false;
+            }, 120);
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (e) {
+            if (dropdownOpen && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('open');
+                dropdownOpen = false;
+            }
+        });
     });
 
     function addProductToShowcase(product, container) {

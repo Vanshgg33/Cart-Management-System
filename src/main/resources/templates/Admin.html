@@ -1,160 +1,303 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Admin Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Lumineux Admin Portal</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
     <style>
-        [data-theme="dark"] {
-            --tw-bg-opacity: 1;
-            background-color: rgb(17 24 39 / var(--tw-bg-opacity));
-            color: white;
+        .admin-main {
+            max-width: 1200px;
+            margin: 3rem auto 2rem auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px #0001;
         }
-        [data-theme="dark"] .text-gray-800 { color: white; }
-        [data-theme="dark"] .bg-white { background-color: #1f2937 !important; }
-        [data-theme="dark"] .text-indigo-700 { color: #c7d2fe; }
-        [data-theme="dark"] .border-gray-300 { border-color: #374151; }
-        [data-theme="dark"] .text-indigo-800 { color: #c7d2fe; }
-        [data-theme="dark"] input { background-color: #374151; color: white; }
-        [data-theme="dark"] .hover\:bg-indigo-50:hover { background-color: #374151; }
+        .admin-cards {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .admin-card {
+            flex: 1 1 200px;
+            background: linear-gradient(135deg, #c8996b 60%, #e8c39e 100%);
+            color: #fff;
+            border-radius: 12px;
+            padding: 2rem 1.5rem;
+            box-shadow: 0 4px 16px #0002;
+            min-width: 180px;
+            margin-bottom: 1rem;
+        }
+        .admin-card h2 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            opacity: 0.85;
+        }
+        .admin-card p {
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin: 0;
+        }
+        .admin-section {
+            margin-bottom: 2.5rem;
+        }
+        .admin-section h2 {
+            color: var(--color-primary, #c8996b);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #faf8f6;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .admin-table th, .admin-table td {
+            padding: 1rem;
+            text-align: left;
+        }
+        .admin-table th {
+            background: #f5e9db;
+            color: #7a5c2e;
+            font-weight: 600;
+        }
+        .admin-table tr {
+            border-bottom: 1px solid #eee;
+        }
+        .admin-table tr:last-child {
+            border-bottom: none;
+        }
+        .admin-table td {
+            color: #2d2d2d;
+        }
+        .status-completed {
+            background: #e6f9e7;
+            color: #2e7d32;
+            padding: 0.3rem 0.8rem;
+            border-radius: 1rem;
+            font-size: 0.95rem;
+        }
+        .status-pending {
+            background: #fffbe7;
+            color: #b59d00;
+            padding: 0.3rem 0.8rem;
+            border-radius: 1rem;
+            font-size: 0.95rem;
+        }
+        .status-cancelled {
+            background: #fdeaea;
+            color: #c62828;
+            padding: 0.3rem 0.8rem;
+            border-radius: 1rem;
+            font-size: 0.95rem;
+        }
+        .admin-nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        .admin-nav-link {
+            color: var(--color-primary, #c8996b);
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.2s;
+        }
+        .admin-nav-link:hover {
+            color: var(--color-secondary, #7a5c2e);
+        }
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .admin-profile img {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 2px solid #c8996b;
+        }
+        .dark-toggle-btn {
+            background: #fff;
+            color: #c8996b;
+            border: 1px solid #c8996b;
+            border-radius: 6px;
+            padding: 0.4rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            margin-left: 1rem;
+            transition: background 0.2s, color 0.2s;
+        }
+        .dark-toggle-btn:hover {
+            background: #c8996b;
+            color: #fff;
+        }
     </style>
 </head>
-<body class="font-sans">
+<body>
+<!-- Header/Nav -->
+<header>
+    <nav>
+        <div class="logo">
+            <span>LUMINEUX ADMIN</span>
+        </div>
+        <div class="menu-wrapper">
+            <ul class="admin-nav">
+                <li><a href="#" class="admin-nav-link">Dashboard</a></li>
+                <li><a href="#" class="admin-nav-link">Orders</a></li>
+                <li><a href="/viewproducts" class="admin-nav-link">Products</a></li>
+                <li><a href="#" class="admin-nav-link">Customers</a></li>
+                <li><a href="#" class="admin-nav-link">Analytics</a></li>
+                <li><a href="#" class="admin-nav-link">Settings</a></li>
+            </ul>
+        </div>
+        <div class="admin-profile">
+            <img src="https://i.pravatar.cc/40" alt="Admin profile">
+            <button id="darkToggle" class="dark-toggle-btn">🌗</button>
+        </div>
+    </nav>
+</header>
 
-<!-- Sidebar + Main Layout -->
-<div class="flex min-h-screen">
-    <!-- Sidebar -->
-    <aside class="w-64 bg-indigo-700 text-white shadow-lg">
-        <div class="p-6 text-2xl font-bold border-b border-indigo-500">Admin Panel</div>
-        <nav class="mt-6 space-y-2">
-            <a href="#" class="block px-6 py-3 hover:bg-indigo-600 transition">📊 Dashboard</a>
-            <a href="#" class="block px-6 py-3 hover:bg-indigo-600 transition">📦 Orders</a>
-            <a href="/viewproducts" class="block px-6 py-3 hover:bg-indigo-600 transition">🛍️ Products</a>
-            <a href="#" class="block px-6 py-3 hover:bg-indigo-600 transition">👥 Customers</a>
-            <a href="#" class="block px-6 py-3 hover:bg-indigo-600 transition">📈 Analytics</a>
-            <a href="#" class="block px-6 py-3 hover:bg-indigo-600 transition">⚙️ Settings</a>
-        </nav>
-    </aside>
-
-    <!-- Main -->
-    <div class="flex-1">
-        <!-- Header -->
-        <header class="bg-indigo-600 text-white shadow p-4 flex justify-between items-center">
-            <input type="text" placeholder="Search..." class="px-4 py-2 rounded w-1/3 text-gray-800" />
-            <div class="flex items-center space-x-4">
-                <button id="darkToggle" class="bg-white text-indigo-600 px-3 py-1 rounded hover:bg-indigo-100">🌗 Toggle Mode</button>
-                <img src="https://i.pravatar.cc/40" class="w-10 h-10 rounded-full border-2 border-white" alt="Admin profile">
+<main>
+    <div class="admin-main">
+        <!-- Cards -->
+        <div class="admin-cards">
+            <div class="admin-card">
+                <h2>Total Sales</h2>
+                <p>$24,500</p>
             </div>
-        </header>
-
-        <!-- Content -->
-        <main class="p-6 space-y-6">
-            <!-- Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="bg-gradient-to-r from-indigo-500 to-indigo-700 text-white p-4 rounded-lg shadow">
-                    <h2 class="text-sm">Total Sales</h2>
-                    <p class="text-3xl font-bold">$24,500</p>
-                </div>
-                <div class="bg-gradient-to-r from-green-400 to-green-600 text-white p-4 rounded-lg shadow">
-                    <h2 class="text-sm">Orders</h2>
-                    <p class="text-3xl font-bold">1,245</p>
-                </div>
-                <div class="bg-gradient-to-r from-blue-400 to-blue-600 text-white p-4 rounded-lg shadow">
-                    <h2 class="text-sm">Users</h2>
-                    <p class="text-3xl font-bold">5,620</p>
-                </div>
-                <div class="bg-gradient-to-r from-pink-400 to-pink-600 text-white p-4 rounded-lg shadow">
-                    <h2 class="text-sm">Products</h2>
-                    <p class="text-3xl font-bold">320</p>
-                </div>
+            <div class="admin-card">
+                <h2>Orders</h2>
+                <p>1,245</p>
             </div>
-
-            <!-- Chart -->
-            <div class="bg-white rounded-lg shadow p-6">
-                <h2 class="text-xl font-bold mb-4 text-indigo-700">📈 Sales Overview</h2>
-                <canvas id="salesChart" height="100"></canvas>
+            <div class="admin-card">
+                <h2>Users</h2>
+                <p>5,620</p>
             </div>
-
-            <!-- Table -->
-            <div class="bg-white rounded-lg shadow p-6">
-                <h2 class="text-xl font-bold mb-4 text-indigo-700">🧾 Recent Orders</h2>
-                <table class="w-full border-collapse text-sm">
-                    <thead>
-                    <tr class="text-left border-b border-gray-300 text-indigo-800">
-                        <th class="py-2">Order ID</th>
-                        <th class="py-2">Customer</th>
-                        <th class="py-2">Date</th>
-                        <th class="py-2">Amount</th>
-                        <th class="py-2">Status</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr class="hover:bg-indigo-50 border-b">
-                        <td class="py-3">#1001</td>
-                        <td class="py-3">Jane Doe</td>
-                        <td class="py-3">10 May 2025</td>
-                        <td class="py-3">$250.00</td>
-                        <td class="py-3"><span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">Completed</span></td>
-                    </tr>
-                    <tr class="hover:bg-indigo-50 border-b">
-                        <td class="py-3">#1002</td>
-                        <td class="py-3">John Smith</td>
-                        <td class="py-3">09 May 2025</td>
-                        <td class="py-3">$170.00</td>
-                        <td class="py-3"><span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-xs">Pending</span></td>
-                    </tr>
-                    <tr class="hover:bg-indigo-50 border-b">
-                        <td class="py-3">#1003</td>
-                        <td class="py-3">Alex Johnson</td>
-                        <td class="py-3">08 May 2025</td>
-                        <td class="py-3">$99.99</td>
-                        <td class="py-3"><span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs">Cancelled</span></td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div class="admin-card">
+                <h2>Products</h2>
+                <p>320</p>
             </div>
-        </main>
+        </div>
+
+        <!-- Chart (placeholder, as Chart.js is not included) -->
+        <section class="admin-section">
+            <h2>📈 Sales Overview</h2>
+            <div style="background:#f5e9db;border-radius:10px;padding:2rem;text-align:center;">
+                <span style="color:#c8996b;font-size:1.2rem;">[Sales Chart Placeholder]</span>
+            </div>
+        </section>
+
+        <!-- Table -->
+        <section class="admin-section">
+            <h2>🧾 Recent Orders</h2>
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>#1001</td>
+                    <td>Jane Doe</td>
+                    <td>10 May 2025</td>
+                    <td>$250.00</td>
+                    <td><span class="status-completed">Completed</span></td>
+                </tr>
+                <tr>
+                    <td>#1002</td>
+                    <td>John Smith</td>
+                    <td>09 May 2025</td>
+                    <td>$170.00</td>
+                    <td><span class="status-pending">Pending</span></td>
+                </tr>
+                <tr>
+                    <td>#1003</td>
+                    <td>Alex Johnson</td>
+                    <td>08 May 2025</td>
+                    <td>$99.99</td>
+                    <td><span class="status-cancelled">Cancelled</span></td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
     </div>
-</div>
+</main>
 
-<!-- JavaScript: Dark Mode + Chart -->
+<!-- Footer -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-column brand">
+            <h3>LUMINEUX</h3>
+            <p>Admin Portal for managing your premium lifestyle store.</p>
+            <div class="payment-methods">
+                <i class="fab fa-cc-visa"></i>
+                <i class="fab fa-cc-mastercard"></i>
+                <i class="fab fa-cc-amex"></i>
+                <i class="fab fa-cc-paypal"></i>
+            </div>
+        </div>
+        <div class="footer-column">
+            <h4>Admin Links</h4>
+            <ul>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Orders</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Analytics</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h4>Support</h4>
+            <ul>
+                <li><a href="#">Contact IT</a></li>
+                <li><a href="#">Docs</a></li>
+                <li><a href="#">System Status</a></li>
+                <li><a href="#">FAQ</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h4>Company</h4>
+            <ul>
+                <li><a href="#">Our Story</a></li>
+                <li><a href="#">Sustainability</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Press</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 Lumineux Admin. All rights reserved.</p>
+        <div class="legal-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+        </div>
+    </div>
+</footer>
+
 <script>
-    // Dark Mode Toggle
-    document.getElementById('darkToggle').addEventListener('click', () => {
-        const html = document.documentElement;
-        html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
+    // Dark mode toggle (simple)
+    document.getElementById('darkToggle').addEventListener('click', function() {
+        document.body.classList.toggle('dark-mode');
+        document.documentElement.classList.toggle('dark-mode');
     });
 
-    // Chart.js
-    const ctx = document.getElementById('salesChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-            datasets: [{
-                label: 'Sales ($)',
-                data: [12000, 15000, 10000, 17000, 24000],
-                backgroundColor: 'rgba(99, 102, 241, 0.2)',
-                borderColor: 'rgba(99, 102, 241, 1)',
-                borderWidth: 2,
-                fill: true,
-                tension: 0.3,
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: { legend: { display: true } },
-            scales: {
-                y: { beginAtZero: true }
-            }
-        }
+    // Animate cards and sections on load
+    window.addEventListener('load', function() {
+        gsap.from('.admin-card', {opacity: 0, y: 30, duration: 1, stagger: 0.15, delay: 0.5});
+        gsap.from('.admin-section', {opacity: 0, y: 30, duration: 1, stagger: 0.2, delay: 1});
     });
 </script>
 </body>
-
-
-
-
 </html>

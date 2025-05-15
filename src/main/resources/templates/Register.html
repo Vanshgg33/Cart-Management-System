@@ -76,16 +76,18 @@
     <div class="loading-text">Preparing Your Experience</div>
 </div>
 
+<header>
+    <nav>
+        <div class="logo">
+            <span>LUMINEUX</span>
+        </div>
+    </nav>
+</header>
+
 <main class="login-page">
     <div class="login-container">
         <div class="login-form-wrapper">
             <form class="login-form" id="registerForm" action="/save">
-                <a href="/re-to">
-                    <div class="logo">
-                        <span>LUMINEUX</span>
-                    </div>
-                </a>
-
                 <h1>Create Account</h1>
                 <p class="form-subtitle">Join Lumineux for premium experiences</p>
 
@@ -181,49 +183,58 @@
 
 <script>
     // Page loading screen animation
-    window.addEventListener('load', function () {
+    window.addEventListener('load', function() {
         setTimeout(function () {
             const loadingScreen = document.querySelector('.loading-screen');
             loadingScreen.style.opacity = '0';
-            setTimeout(() => loadingScreen.style.display = 'none', 500);
+            setTimeout(function () {
+                loadingScreen.style.display = 'none';
+            }, 500);
         }, 1500);
+    });
+    setTimeout(() => {
+        document.querySelector('.loading-screen').style.opacity = 0;
+        setTimeout(() => {
+            document.querySelector('.loading-screen').style.display = 'none';
+        }, 500);
+    }, 750);
 
-        // Password toggle
-        document.querySelectorAll('.toggle-password').forEach(button => {
-            button.addEventListener('click', function () {
-                const passwordField = this.previousElementSibling.previousElementSibling;
-                const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordField.setAttribute('type', type);
+    // Password toggle
+    document.querySelectorAll('.toggle-password').forEach(button => {
+        button.addEventListener('click', function () {
+            const passwordField = this.previousElementSibling.previousElementSibling;
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
 
-                const icon = this.querySelector('i');
-                icon.classList.toggle('fa-eye');
-                icon.classList.toggle('fa-eye-slash');
-            });
-        });
-
-        // Password matching
-        const registerForm = document.getElementById('registerForm');
-        const passwordInput = document.getElementById('password');
-        const confirmPassword = document.getElementById('confirmPassword');
-
-        registerForm.addEventListener('submit', function (e) {
-            if (passwordInput.value !== confirmPassword.value) {
-                e.preventDefault();
-                alert('Passwords do not match!');
-                confirmPassword.classList.add('error');
-            }
-        });
-
-        confirmPassword.addEventListener('input', function () {
-            if (passwordInput.value === this.value) {
-                this.classList.remove('error');
-                this.classList.add('valid');
-            } else {
-                this.classList.remove('valid');
-                this.classList.add('error');
-            }
+            const icon = this.querySelector('i');
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
         });
     });
+
+    // Password matching
+    const registerForm = document.getElementById('registerForm');
+    const passwordInput = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirmPassword');
+
+    registerForm.addEventListener('submit', function (e) {
+        if (passwordInput.value !== confirmPassword.value) {
+            e.preventDefault();
+            alert('Passwords do not match!');
+            confirmPassword.classList.add('error');
+        }
+    });
+
+    confirmPassword.addEventListener('input', function () {
+        if (passwordInput.value === this.value) {
+            this.classList.remove('error');
+            this.classList.add('valid');
+        } else {
+            this.classList.remove('valid');
+            this.classList.add('error');
+        }
+    });
+
 </script>
 </body>
 </html>

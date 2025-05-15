@@ -38,9 +38,9 @@
 <header>
     <nav>
         <a href = "/re-to">
-        <div class="logo">
-            <span>LUMINEUX</span>
-        </div>
+            <div class="logo">
+                <span>LUMINEUX</span>
+            </div>
         </a>
     </nav>
 </header>
@@ -205,22 +205,30 @@
     });
 
     function toggleContactMethod(method) {
-        const label = document.getElementById('loginLabel');
-        const icon = document.getElementById('loginIcon');
-        const input = document.getElementById('logininput');
+        const emailField = document.getElementById('emailField');
+        const phoneField = document.getElementById('phoneField');
+        const emailToggle = document.getElementById('emailToggle');
+        const phoneToggle = document.getElementById('phoneToggle');
+        const emailInput = document.getElementById('email');
+        const phoneInput = document.getElementById('phone');
 
         if (method === 'email') {
-            label.textContent = 'Email Address';
-            input.placeholder = 'Enter your email';
-            icon.className = 'fas fa-envelope icon-input';
+            emailField.style.display = 'block';
+            phoneField.style.display = 'none';
+            emailToggle.classList.add('active');
+            phoneToggle.classList.remove('active');
+            emailInput.required = true;
+            phoneInput.required = false;
+            phoneInput.value = '';
         } else {
-            label.textContent = 'Phone Number';
-            input.placeholder = 'Enter your phone number';
-            icon.className = 'fas fa-phone icon-input';
+            emailField.style.display = 'none';
+            phoneField.style.display = 'block';
+            emailToggle.classList.remove('active');
+            phoneToggle.classList.add('active');
+            emailInput.required = false;
+            phoneInput.required = true;
+            emailInput.value = '';
         }
-
-        document.getElementById('emailToggle').classList.toggle('active', method === 'email');
-        document.getElementById('phoneToggle').classList.toggle('active', method === 'phone');
     }
 
     window.addEventListener('load', function () {
@@ -256,12 +264,13 @@
             event.preventDefault();
 
             let logininput = "";
+            const emailFieldVisible = document.getElementById('emailField').style.display !== 'none';
             const email = document.getElementById("email").value.trim();
             const phone = document.getElementById("phone").value.trim();
 
-            if (email !== "") {
+            if (emailFieldVisible) {
                 logininput = email;
-            } else if (phone !== "") {
+            } else {
                 logininput = phone;
             }
 
@@ -299,6 +308,9 @@
                 alert("Login failed! Check your credentials.");
             }
         });
+
+        // Set default toggle state on load
+        toggleContactMethod('email');
     });
 
 </script>

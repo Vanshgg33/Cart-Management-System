@@ -7,6 +7,65 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+  <style>
+    .nav-actions .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .nav-actions .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 120%;
+      right: 0;
+      background: linear-gradient(135deg, #fff 80%, #f5e9db 100%);
+      min-width: 170px;
+      box-shadow: 0 8px 32px rgba(12,27,51,0.10), 0 2px 8px #c8996b22;
+      border-radius: 12px;
+      z-index: 200;
+      padding: 0.5rem 0;
+      border: 1.5px solid #e8c39e;
+      transition: box-shadow 0.2s;
+      font-family: var(--font-primary, 'Montserrat', sans-serif);
+      animation: fadeIn 0.25s;
+    }
+    .nav-actions .dropdown.open .dropdown-menu,
+    .nav-actions .dropdown:hover .dropdown-menu,
+    .nav-actions .dropdown:focus-within .dropdown-menu {
+      display: block;
+    }
+    .nav-actions .dropdown-menu .dropdown-item {
+      display: block;
+      padding: 1rem 1.5rem;
+      color: #c8996b;
+      font-size: 1.1rem;
+      font-family: var(--font-primary, 'Montserrat', sans-serif);
+      text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.18s, color 0.18s;
+      text-align: left;
+    }
+    .nav-actions .dropdown-menu .dropdown-item:hover {
+      background: #f5e9db;
+      color: #7a5c2e;
+    }
+    .nav-actions .dropdown-menu .dropdown-item:active {
+      background: #e8c39e;
+      color: #232f3e;
+    }
+    /* Optional: Add a small arrow for dropdown */
+    .nav-actions .dropdown > .fa-user::after {
+      content: '';
+      display: inline-block;
+      margin-left: 7px;
+      vertical-align: middle;
+      border-top: 5px solid #c8996b;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+    }
+  </style>
 </head>
 <body>
 <div class="loading-screen">
@@ -40,11 +99,11 @@
     </div>
     <div class="nav-actions">
       <div class="search"><i class="fas fa-search"></i></div>
-      <div class="account dropdown">
+      <div class="account dropdown" tabindex="0">
         <i class="fas fa-user"></i>
         <div class="dropdown-menu">
-          <a href="#" class="dropdown-item">Login</a>
-          <a href="#" class="dropdown-item">Register</a>
+          <a href="/auth/login" class="dropdown-item">Login</a>
+          <a href="/register" class="dropdown-item">Register</a>
           <a href="#" class="dropdown-item">Profile</a>
         </div>
       </div>
@@ -273,6 +332,39 @@
       }
     });
   }
+  // Dropdown menu: show on hover/click, stay open when inside, close when mouse leaves dropdown area
+  document.addEventListener('DOMContentLoaded', function () {
+    const dropdown = document.querySelector('.nav-actions .dropdown');
+    const userIcon = dropdown.querySelector('.fa-user');
+    let dropdownOpen = false;
+    let closeTimeout = null;
+
+    // Toggle dropdown on click
+
+
+    // Show dropdown on mouseenter (icon or menu)
+    dropdown.addEventListener('mouseenter', function () {
+      clearTimeout(closeTimeout);
+      dropdown.classList.add('open');
+      dropdownOpen = true;
+    });
+
+    // Hide dropdown when mouse leaves the whole dropdown area (icon + menu)
+    dropdown.addEventListener('mouseleave', function () {
+      closeTimeout = setTimeout(() => {
+        dropdown.classList.remove('open');
+        dropdownOpen = false;
+      }, 120);
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function (e) {
+      if (dropdownOpen && !dropdown.contains(e.target)) {
+        dropdown.classList.remove('open');
+        dropdownOpen = false;
+      }
+    });
+  });
 </script>
 
 </body>

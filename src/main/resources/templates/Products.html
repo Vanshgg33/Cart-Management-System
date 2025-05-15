@@ -2,95 +2,539 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Products Management</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Lumineux Admin | Products Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+    <style>
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #2d2d2d;
+            background: #f5f5f5;
+            line-height: 1.6;
+            padding-top: 80px; /* Space for fixed header */
+        }
+
+        /* Header styles */
+        header {
+            background: #faf7f3;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        header nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 3vw;
+            min-height: 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo-menu-container {
+            display: flex;
+            align-items: center;
+            gap: 2.5vw;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 0.25em;
+            color: #232f3e;
+            background: linear-gradient(90deg, #232f3e 60%, #c8996b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .admin-nav {
+            display: flex;
+            gap: 1.5vw;
+            align-items: center;
+            list-style: none;
+        }
+
+        .admin-nav-link {
+            color: #232f3e;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 1.15rem;
+            background: none;
+            border: none;
+            padding: 0.5rem 0.8rem;
+            border-radius: 6px;
+            transition: color 0.2s, background 0.2s;
+        }
+
+        .admin-nav-link:hover,
+        .admin-nav-link.active {
+            color: #c8996b;
+            background: #f5e9db;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+        .admin-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #c8996b;
+            object-fit: cover;
+        }
+
+        .dark-toggle-btn {
+            background: #fff;
+            color: #c8996b;
+            border: 1.5px solid #c8996b;
+            border-radius: 8px;
+            padding: 0.35rem 1.2rem;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.2rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dark-toggle-btn:hover {
+            background: #c8996b;
+            color: #fff;
+        }
+
+        /* Main content styles */
+        .admin-main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.05);
+        }
+
+        .admin-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .admin-section h2 {
+            color: #c8996b;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #faf8f6;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .admin-table th, .admin-table td {
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .admin-table th {
+            background: #f5e9db;
+            color: #7a5c2e;
+            font-weight: 600;
+        }
+
+        .admin-table tr {
+            border-bottom: 1px solid #eee;
+        }
+
+        .admin-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .delete-btn {
+            background: #c62828;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.4rem 1rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .delete-btn:hover {
+            background: #a31515;
+        }
+
+        .add-form {
+            background: #faf8f6;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+            margin-top: 2rem;
+        }
+
+        .add-form label {
+            color: #7a5c2e;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            display: block;
+        }
+
+        .add-form input, .add-form textarea {
+            width: 100%;
+            border: 1px solid #e8c39e;
+            border-radius: 6px;
+            padding: 0.7rem 1rem;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            background: #fff;
+            color: #2d2d2d;
+        }
+
+        .add-form button {
+            background: #c8996b;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.7rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .add-form button:hover {
+            background: #7a5c2e;
+        }
+
+        /* Footer styles */
+        footer {
+            background: #232f3e;
+            color: #fff;
+            padding: 3rem 0 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column.brand {
+            flex: 2;
+        }
+
+        .footer-column h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #c8996b;
+        }
+
+        .footer-column h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #c8996b;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-column a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-column a:hover {
+            color: #c8996b;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            font-size: 1.8rem;
+            color: #ccc;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding: 1.5rem 2rem 0;
+            border-top: 1px solid #3a3a3a;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .legal-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 1100px) {
+            .logo {
+                font-size: 1.6rem;
+            }
+
+            .admin-nav-link {
+                font-size: 1rem;
+                padding: 0.4rem 0.6rem;
+            }
+        }
+
+        @media (max-width: 900px) {
+            header nav {
+                flex-wrap: wrap;
+                padding: 1rem 2vw;
+            }
+
+            .logo-menu-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+                width: 100%;
+            }
+
+            .admin-nav {
+                flex-wrap: wrap;
+                gap: 0.8rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .admin-profile {
+                margin-left: auto;
+                margin-right: 0;
+            }
+
+            body {
+                padding-top: 140px; /* Adjust for taller header */
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding-top: 180px; /* Adjust for even taller header */
+            }
+
+            .admin-profile {
+                margin: 0.5rem 0;
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            .logo {
+                font-size: 1.3rem;
+            }
+
+            .add-form {
+                padding: 1.5rem;
+            }
+
+            .admin-main {
+                padding: 1.5rem;
+            }
+        }
+    </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
-
-<div class="p-8 max-w-7xl mx-auto">
-    <h1 class="text-3xl font-bold text-indigo-700 mb-6">🛍️ Manage Products</h1>
-
-    <!-- Products Table -->
-    <div class="bg-white rounded-lg shadow p-6 mb-10">
-        <h2 class="text-xl font-semibold mb-4 text-indigo-600">📦 Product List</h2>
-        <table class="min-w-full table-auto border">
-            <thead class="bg-indigo-600 text-white">
-            <tr>
-                <th class="px-4 py-2">Image</th>
-                <th class="px-4 py-2">Name</th>
-                <th class="px-4 py-2">Price</th>
-                <th class="px-4 py-2">Description</th>
-                <th class="px-4 py-2">Quantity</th>
-                <th class="px-4 py-2">Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="product : ${products}" class="border-b hover:bg-gray-50">
-                <td class="px-4 py-2">
-                    <img th:src="@{${product.prod_image}}" class="h-16 w-16 rounded" alt="Product Image" /></td>
-                </td>
-                <td th:text="${product.prod_name}"></td>
-                <td th:text="'₹' + ${product.prod_price}"></td>
-                <td th:text="${product.prod_description}"></td>
-                <td th:text="${product.prod_quantity}"></td>
-                <td class="px-4 py-2">
-                    <form action="/deleteproduct" method="post">
-                        <input type="hidden" name="name" th:value="${product.prod_name}" />
-                        <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Add Product Form -->
-    <div class="bg-white rounded-lg shadow p-6">
-        <h2 class="text-xl font-semibold mb-4 text-indigo-600">➕ Add New Product</h2>
-        <form th:action="@{/admin_add}" method="post" enctype="multipart/form-data" class="space-y-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div>
-                    <label class="block text-sm font-medium mb-1 text-indigo-700">Product Name</label>
-                    <input type="text" name="name" required class="w-full border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1 text-indigo-700">Price (₹)</label>
-                    <input type="number" name="price" required step="0.01" class="w-full border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
-                </div>
-                <div class="col-span-2">
-                    <label class="block text-sm font-medium mb-1 text-indigo-700">Description</label>
-                    <textarea name="description"  required rows="3" class="w-full border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"></textarea>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1 text-indigo-700">Quantity</label>
-                    <input type="number" name="quantity" required class="w-full border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1 text-indigo-700">Product Image</label>
-                    <input type="file" name="image"accept="image/*" required class="w-full border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
-                </div>
+<body>
+<!-- Header/Nav -->
+<header>
+    <nav>
+        <div class="logo-menu-container">
+            <div class="logo">
+                <span>LUMINEUX ADMIN</span>
             </div>
-            <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded shadow hover:bg-indigo-700 transition">Add Product</button>
-        </form>
+            <ul class="admin-nav">
+                <li><a href="#" class="admin-nav-link">Dashboard</a></li>
+                <li><a href="#" class="admin-nav-link">Orders</a></li>
+                <li><a href="/viewproducts" class="admin-nav-link active">Products</a></li>
+                <li><a href="#" class="admin-nav-link">Customers</a></li>
+                <li><a href="#" class="admin-nav-link">Analytics</a></li>
+                <li><a href="#" class="admin-nav-link">Settings</a></li>
+            </ul>
+        </div>
+        <div class="admin-profile">
+            <img src="/api/placeholder/40/40" alt="Admin profile">
+            <button id="darkToggle" class="dark-toggle-btn">🌗</button>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <div class="admin-main">
+        <h1 style="font-size:2.2rem;color:#c8996b;font-weight:700;margin-bottom:2rem;">🛍️ Manage Products</h1>
+        <!-- Products Table -->
+        <section class="admin-section">
+            <h2>📦 Product List</h2>
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product : ${products}">
+                    <td>
+                        <img th:src="@{${product.prod_image}}" style="height:60px;width:60px;border-radius:8px;" alt="Product Image" />
+                    </td>
+                    <td th:text="${product.prod_name}"></td>
+                    <td th:text="'₹' + ${product.prod_price}"></td>
+                    <td th:text="${product.prod_description}"></td>
+                    <td th:text="${product.prod_quantity}"></td>
+                    <td>
+                        <form action="/deleteproduct" method="post">
+                            <input type="hidden" name="name" th:value="${product.prod_name}" />
+                            <button type="submit" class="delete-btn">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Add Product Form -->
+        <section class="admin-section">
+            <h2>➕ Add New Product</h2>
+            <form th:action="@{/admin_add}" method="post" enctype="multipart/form-data" class="add-form" id="addProductForm">
+                <label>Product Name</label>
+                <input type="text" name="name" required>
+                <label>Price (₹)</label>
+                <input type="number" name="price" required step="0.01">
+                <label>Description</label>
+                <textarea name="description" required rows="3"></textarea>
+                <label>Quantity</label>
+                <input type="number" name="quantity" required>
+                <label>Product Image</label>
+                <input type="file" name="image" accept="image/*" required>
+                <button type="submit">Add Product</button>
+            </form>
+        </section>
     </div>
-</div>
+</main>
 
-</body>
+<!-- Footer -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-column brand">
+            <h3>LUMINEUX</h3>
+            <p>Admin Portal for managing your premium lifestyle store.</p>
+            <div class="payment-methods">
+                <i class="fab fa-cc-visa"></i>
+                <i class="fab fa-cc-mastercard"></i>
+                <i class="fab fa-cc-amex"></i>
+                <i class="fab fa-cc-paypal"></i>
+            </div>
+        </div>
+        <div class="footer-column">
+            <h4>Admin Links</h4>
+            <ul>
+                <li><a href="admin.html">Dashboard</a></li>
+                <li><a href="#">Orders</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Analytics</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h4>Support</h4>
+            <ul>
+                <li><a href="#">Contact IT</a></li>
+                <li><a href="#">Docs</a></li>
+                <li><a href="#">System Status</a></li>
+                <li><a href="#">FAQ</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h4>Company</h4>
+            <ul>
+                <li><a href="#">Our Story</a></li>
+                <li><a href="#">Sustainability</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Press</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 Lumineux Admin. All rights reserved.</p>
+        <div class="legal-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+        </div>
+    </div>
+</footer>
+
 <script>
-    document.querySelector('#form').addEventListener('submit', async function(e) {
+    // Animate sections on load
+    window.addEventListener('load', function() {
+        gsap.from('.admin-section', {opacity: 0, y: 30, duration: 1, stagger: 0.2, delay: 0.5});
+    });
+
+    // AJAX add product (optional, fallback to normal submit if JS fails)
+    document.getElementById('addProductForm').addEventListener('submit', async function(e) {
         e.preventDefault();
-
         const formData = new FormData(this);
-
-        const response = await fetch('/admin_add', {
-            method: 'POST',
-            body: formData
-        });
-        if (response.ok) {
-            window.location.href = "/";
-        } else {
-            console.error("Product creation failed.");
+        try {
+            const response = await fetch('/admin_add', {
+                method: 'POST',
+                body: formData
+            });
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert("Product creation failed.");
+            }
+        } catch (error) {
+            console.error("Error submitting form:", error);
+            // Fall back to traditional form submission
+            this.submit();
         }
     });
+
+    // Dark mode toggle functionality (placeholder)
+    document.getElementById('darkToggle').addEventListener('click', function() {
+        document.body.classList.toggle('dark-mode');
+        // You could add additional dark mode logic here
+    });
 </script>
+</body>
 </html>
