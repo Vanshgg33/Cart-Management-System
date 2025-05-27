@@ -39,9 +39,9 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         String logininput = request.getLogininput();
 
-        String password = request.getPassword();
-        User user = userRepository.findByUsernameOrEmailOrPhone(logininput);
-        System.out.println(request);
+            String password = request.getPassword();
+            User user = userRepository.findByUsernameOrEmailOrPhone(logininput);
+            System.out.println(request);
 
         if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
             throw new BadCredentialsException("Invalid credentials");
